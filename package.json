@@ -1,0 +1,17 @@
+{
+  "name": "electron-test",
+  "version": "1.0.0",
+  "description": "test project for electron",
+  "main": "index.js",
+  "scripts": {
+    "test": "electron index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron-prebuilt": "^1.4.10"
+  },
+  "dependencies": {
+    "node-mpd": "0.0.2"
+  }
+}
