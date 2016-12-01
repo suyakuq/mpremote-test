@@ -6,6 +6,7 @@ const BrowserWindow = electron.BrowserWindow;
 var ipc = require('electron').ipcMain;
 var MPD = require('node-mpd');
 var mpd = new MPD({});
+global.sharedObject = {"currentSongs" : []};
 let mainWindow;
 
 
@@ -18,20 +19,13 @@ app.on('window-all-closed', function() {
 app.on('ready', function() {  
   mainWindow = new BrowserWindow({width: 800, height: 600});
   mainWindow.loadURL('file://' + __dirname + '/index.html');
-  mainWindow.openDevTools();
+  mainWindow.openDevTools(); //F12 equivalent
   mpd.on("ready", function() {
-    //mpd.volume(80);
     console.log('ready');
-    mpd.playlist.push(mpd.songs[1]);
-    //mpd._updatePlaylist();
     for(var num = 0; num < mpd.playlist.length; num++) {
-      var n = num + 1;
-      console.log(n + ": " + mpd.playlist[num].artist + " - " + mpd.playlist[num].title);
+      global.sharedObject.currentSongs.push({"pos": num, "fileName": mpd.playlist[num].file});
+      //console.log(n + ": " + mpd.playlist[num].artist + " - " + mpd.playlist[num].title);
     }
-    //console.log(mpd);
-
-   // mpd.play();
-    console.log(mpd.status);
   });
 
   mpd.on("update", function(status) {
@@ -50,11 +44,14 @@ app.on('ready', function() {
         break;
     }
   });
+  //La Connection commence ici
   mpd.connect();
+
   mainWindow.on('closed', function() {
     mainWindow = null;
   });
 
+  //Evenements et interaction avec MPD
   ipc.on('next', function () {
     mpd.next();
   });
@@ -74,6 +71,16 @@ app.on('ready', function() {
   ipc.on('stop', function () {
     mpd.stop();
   });
+
+  ipc.on('playAt', function (event, data) {
+    mpd.playAt(data.pos);
+  });
+
+  ipc.on('clear', function () {
+    mpd.clear();
+    mpd.updateStatus()
+  });
+
 });
 
 

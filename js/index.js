@@ -4,61 +4,74 @@
 'use strict';
 
 var PLAYER = {
-    modules: {}
+    modules: {},
+    ipc : require('electron').ipcRenderer
 };
 
 PLAYER.modules.actions = (function(){
-    var ipc = require('electron').ipcRenderer;
+
     return {
           prev: function () {
-              ipc.send('prev');
+              PLAYER.ipc.send('prev');
           },
           next: function () {
-              ipc.send('next');
+              PLAYER.ipc.send('next');
           },
           play: function () {
-              ipc.send('play');
+              PLAYER.ipc.send('play');
           },
           pause: function () {
-              ipc.send('pause');
+              PLAYER.ipc.send('pause');
           },
           stop: function () {
-              ipc.send('stop');
-          }
+              PLAYER.ipc.send('stop');
+          },
+            clear: function () {
+                PLAYER.ipc.send('clear');
+            }
     };
+})();
+
+PLAYER.modules.playlist = (function () {
+    var currentSongs = require('electron').remote.getGlobal('sharedObject').currentSongs;
+    console.log(currentSongs);
+    return{
+        loadSongs: function () {
+            var ul = $('#songList');
+            for(var i = 0; i< currentSongs.length; i++){
+                ul.append($('<li>'+currentSongs[i].fileName+'</li>').attr('id', currentSongs[i].pos));
+            }
+        },
+        playSong: function(pos){
+            console.log(pos);
+            PLAYER.ipc.send('playAt',{'pos': pos});
+        },
+        initSongEvents: function () {
+            $('#songList').on('click', 'li', function () {
+                PLAYER.modules.playlist.playSong($(this).attr('id'));
+            });
+        }
+    }
 })();
 
 
 PLAYER.modules.app = (function(){
-    var prev, next, play, pause, stop;
     var actions = PLAYER.modules.actions;
-
+    var playlist = PLAYER.modules.playlist;
     return{
         start : function () {
-            prev = document.getElementById('prev');
-            next = document.getElementById('next');
-            play = document.getElementById('play');
-            pause = document.getElementById('pause');
-            stop = document.getElementById('stop');
-
-            prev.onclick = function () {
-                actions.prev();
-            };
-            next.onclick = function () {
-                actions.next();
-            };
-            play.onclick = function () {
-                actions.play();
-            };
-            pause.onclick = function () {
-                actions.pause();
-            };
-            stop.onclick = function () {
-                actions.stop();
-            }
+            playlist.loadSongs();
+            $('#prev').click(actions.prev);
+            $('#next').click(actions.next);
+            $('#play').click(actions.play);
+            $('#pause').click(actions.pause);
+            $('#stop').click(actions.stop);
+            $('#clear').click(actions.clear);
         }
     }
 
 })();
-
-window.onload = PLAYER.modules.app.start;
+$(document).ready(function(){
+    PLAYER.modules.app.start();
+    PLAYER.modules.playlist.initSongEvents();
+});

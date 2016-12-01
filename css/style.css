@@ -1,3 +1,18 @@
 body{
-    background: url("https://images.template.net/wp-content/uploads/2014/11/cool-music-background.jpg")
+    /*background: url("https://images.template.net/wp-content/uploads/2014/11/cool-music-background.jpg")*/
+}
+
+#songList li{
+    list-style-type: none;
+    border: 1px solid black;
+    color: lightcoral;
+}
+
+#songList li.currentPlaying{
+    background: cadetblue;
+}
+
+#songList li:hover{
+    background: lightgreen;
+    cursor: pointer;
 }
