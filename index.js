@@ -3,7 +3,6 @@
 const electron = require('electron');  
 const app = electron.app;  
 const BrowserWindow = electron.BrowserWindow;
-var ipc = require('electron').ipcMain;
 //var MPD = require('node-mpd');
 //var mpd = new MPD({});
 //global.sharedObject = {};

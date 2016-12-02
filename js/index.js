@@ -5,16 +5,16 @@
 
 var PLAYER = {
     modules: {},
-    ipc : require('electron').ipcRenderer,
     remote : require('electron').remote,
     MPD : require('node-mpd')
 };
 
 PLAYER.modules.mpd = (function () {
-
+    var volume_interval = 10;
     var mpd = new PLAYER.MPD({});
     mpd.on("ready", function () {
         PLAYER.modules.playlist.loadSongs(mpd.playlist);
+        PLAYER.modules.playlist.showVolume(mpd.status.volume);
         console.log('ready');
     });
     mpd.on("update", function(status) {
@@ -40,6 +40,9 @@ PLAYER.modules.mpd = (function () {
         play: function () {
             mpd.play();
         },
+        pause: function () {
+            mpd.pause();
+        },
         next: function () {
             mpd.next();
         },
@@ -50,15 +53,33 @@ PLAYER.modules.mpd = (function () {
             mpd.stop();
         },
         clear: function () {
-            mpd.clear(function () {
-                mpd._updatePlaylist(PLAYER.modules.playlist.loadSongs(mpd.playlist))
-            } );
+            mpd.clear();
+            mpd._updatePlaylist(function () {
+                   PLAYER.modules.playlist.loadSongs(mpd.playlist);
+            });
+
         },
         playAt: function (pos) {
                 mpd.playAt(pos);
         },
-        add: function () {
-            mpd.add();
+        add: function (name) {
+            mpd.add(name);
+            mpd._updatePlaylist(function () {
+                PLAYER.modules.playlist.loadSongs(mpd.playlist);
+            });
+        },
+        volPlus: function () {
+            console.log("plus");
+            mpd.volume(parseInt(mpd.status.volume) + volume_interval);
+            mpd.updateStatus(function () {
+                PLAYER.modules.playlist.showVolume(mpd.status.volume);
+            });
+        },
+        volMinus: function () {
+            mpd.volume(parseInt(mpd.status.volume) - volume_interval);
+            mpd.updateStatus(function () {
+                PLAYER.modules.playlist.showVolume(mpd.status.volume);
+            });
         }
     }
 })();
@@ -66,16 +87,19 @@ PLAYER.modules.mpd = (function () {
 PLAYER.modules.playlist = (function () {
     return{
         loadSongs: function (songs) {
-            console.log("songs");
-            console.log(songs);
-            var ul = $('#songList');
-            ul.empty();
-            for(var i = 0; i< songs.length; i++){
-                ul.append($('<li>'+songs[i].file+'</li>').attr('id', i));
+            if(songs) {
+                var ul = $('#songList');
+                ul.empty();
+                for (var i = 0; i < songs.length; i++) {
+                    ul.append($('<li>' + songs[i].file + '</li>').attr('id', i));
+                }
             }
         },
+        showVolume: function (volume) {
+          $('#currentVol').text('Volume: '+volume);
+        },
         addFolder: function(name){
-               // PLAYER.ipc.send('add',{'name':name});
+            PLAYER.modules.mpd.add(name);
         },
         initSongEvents: function () {
             $('#songList').on('click', 'li', function () {
@@ -100,6 +124,8 @@ PLAYER.modules.app = (function(){
             $('#pause').click(mpd.pause);
             $('#stop').click(mpd.stop);
             $('#clear').click(mpd.clear);
+            $('#volPlus').click(mpd.volPlus);
+            $('#volMinus').click(mpd.volMinus);
         }
     }
 
