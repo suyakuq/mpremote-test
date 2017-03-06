@@ -2,26 +2,47 @@
 <html>  
   <head>
     <meta charset="utf-8">
-    <title>Hola Mundo!</title>
+    <title>MPRemote!</title>
     <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <script type="text/javascript" src="js/index.js"></script>
     <script>if (window.module) module = window.module;</script>
     <link rel="stylesheet" href="css/style.css">
   </head>
-  <body>
-    <h1>HOLA!</h1>
-    <p>MPDRemote Test</p>
-    <ul id="songList"></ul>
-    <button id="next">Next</button>
-    <button id="prev">Previous</button>
-    <button id="pause">Pause</button>
-    <button id="play">Play</button>
-    <button id="stop">Stop</button>
-    <button id="clear">Clear</button>
+  <body ng-app="mpremote">
+  <!-- Fixed navbar -->
+  <nav class="navbar navbar-default">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">MPRemote</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a ui-sref="settings">Settings</a></li>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
   <div>
-    <input type="text" id="folder" placeholder="folder name"/><button id="add">Add</button>
-    <span id="currentVol"></span><button id="volMinus">Vol -</button><button  id="volPlus">Vol+</button>
+    <div  class="container">
+      <ui-view></ui-view>
+    </div>
   </div>
+  <div>
+    <div class="foo">
+      <h2>Your MUSIC</h2>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="js/bundle.js"></script>
+  <script type="text/javascript" src="js/electangular.js"></script>
+  <!--<script type="text/javascript" src="js/services/mpd_service.js"></script>
+  <script type="text/javascript" src="js/controllers/main_ctrl.js"></script>
+  <script type="text/javascript" src="js/controllers/settings_ctrl.js"></script>-->
   </body>
 </html>  

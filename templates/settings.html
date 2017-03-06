@@ -1,0 +1,22 @@
+    <div class="list">
+      <div class="item item-input-inset">
+        <label class="item item-input item-input-wrapper">
+          <i class="icon ion-edit placeholder-icon"></i>
+          <input type="text" placeholder="Host" ng-disabled="isConnected" ng-model="player.host">
+        </label>
+      </div>
+
+      <div class="item item-input-inset">
+        <label class="item item-input item-input-wrapper">
+          <i class="icon ion-edit placeholder-icon"></i>
+          <input type="text" placeholder="Port" ng-disabled="isConnected" ng-model="player.port">
+        </label>
+      </div>
+      <div ng-if="isConnected">
+        <button class="button button-block" ng-click="disconnect()">Se desconnecter</button>
+      </div>
+      <div ng-if="!isConnected">
+        <button class="button button-block" ng-click="connect(player)">Se connecter</button>
+        <button class="button button-block" ng-click="connect()">Connection par défaut</button>
+      </div>
+    </div>
