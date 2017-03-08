@@ -3,21 +3,13 @@
  */
 module.exports = function($rootScope, electron) {
 
-    //var remote = require('electron').remote;
-
-    //var dialog = remote.require('dialog');
-    // An alert dialog
     var showAlert = function (message) {
         electron.dialog.showMessageBox({
             title: 'message',
             message: message
         });
-        //alert(message);
-        /*var alertPopup = dialog.showOpenDialog({
-            title: 'Message',
-            //template: message
-        });*/
     };
+
 
     var MPD = require('node-mpd');
     var mpd;
@@ -31,15 +23,11 @@ module.exports = function($rootScope, electron) {
         connect : function (host, port) {
             mpd = new MPD({host: host, port : port});
             mpd.on('ready', function (status, server) {
-                console.log(mpd);
                 showAlert("Connecté à "+server.name+", host: "+mpd.host);
                 $rootScope.$broadcast('onConnect',mpd);
             });
             mpd.on('update', function (updated) {
-                console.log("updated");
-                console.log(updated);
-                $rootScope.$broadcast('onUpdate', {server:
-                    {host: mpd.host, port: mpd.port, isConnected: true, playlist: mpd.playlist}});
+                $rootScope.$broadcast('onUpdate',mpd);
             });
 
             mpd.connect();
@@ -47,8 +35,10 @@ module.exports = function($rootScope, electron) {
         },
         disconnect: function () {
             console.log("disconnected");
-            $rootScope.$broadcast('onDisconnect', {});
             mpd.disconnect();
+            mpd.on('update', function () {
+                $rootScope.$broadcast('onUpdate', false);
+            });
         }
         ,
 
@@ -99,16 +89,18 @@ module.exports = function($rootScope, electron) {
             });
         },
         volPlus: function () {
-            mpd.volume(parseInt(mpd.status.volume) + volume_interval);
-            mpd.updateStatus(function () {
-                console.log("volPlus");
-            });
+            var newVolume = parseInt(mpd.status.volume) + volume_interval;
+            if(newVolume <= 100) {
+                mpd.volume(newVolume);
+                mpd.updateStatus();
+            }
         },
         volMinus: function () {
-            mpd.volume(parseInt(mpd.status.volume) - volume_interval);
-            mpd.updateStatus(function () {
-                console.log("volMinus");
-            });
+            var newVolume = parseInt(mpd.status.volume) - volume_interval;
+            if (newVolume >= 0) {
+                mpd.volume(newVolume);
+                mpd.updateStatus();
+            }
         }
     }
 };

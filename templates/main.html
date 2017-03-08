@@ -8,6 +8,7 @@
             <button id="play" ng-click="play()">Play</button>
             <button id="stop" ng-click="stop()">Stop</button>
             <button id="clear" ng-click="clear()">Clear</button>
+            <div>Volume: {{player.status.volume}}</div>
             <div>
                 <span id="currentVol"></span><button id="volMinus" ng-click="volMinus()">Vol -</button><button  id="volPlus" ng-click="volPlus()">Vol+</button>
             </div>
@@ -20,4 +21,10 @@
             <p><strong>Le client n'est pas connecté</strong></p>
         </div>
     </div>
+</div>
+<hr>
+<div class="row">
+        <div class="foo">
+            <h2>Your MUSIC</h2>
+        </div>
 </div>

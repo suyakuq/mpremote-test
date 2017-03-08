@@ -10,8 +10,15 @@ function main_ctrl($scope, MPDService) {
     });
 
     $scope.$on('onUpdate', function (event, data) {
-        console.log("onUpdate");
-        $scope.player.playlist = data.server.playlist;
+        $scope.$apply(function () {
+            $scope.player = data ? data : undefined;
+            console.log($scope.player);
+        });
+
+    });
+
+    $scope.$on('onDisconnect', function(event, data){
+        $scope.player = undefined;
     });
 
     $scope.addSongs = function () {

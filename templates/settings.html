@@ -1,22 +1,33 @@
-    <div class="list">
-      <div class="item item-input-inset">
-        <label class="item item-input item-input-wrapper">
-          <i class="icon ion-edit placeholder-icon"></i>
-          <input type="text" placeholder="Host" ng-disabled="isConnected" ng-model="player.host">
-        </label>
-      </div>
-
-      <div class="item item-input-inset">
-        <label class="item item-input item-input-wrapper">
-          <i class="icon ion-edit placeholder-icon"></i>
-          <input type="text" placeholder="Port" ng-disabled="isConnected" ng-model="player.port">
-        </label>
-      </div>
-      <div ng-if="isConnected">
-        <button class="button button-block" ng-click="disconnect()">Se desconnecter</button>
-      </div>
-      <div ng-if="!isConnected">
-        <button class="button button-block" ng-click="connect(player)">Se connecter</button>
-        <button class="button button-block" ng-click="connect()">Connection par défaut</button>
-      </div>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <h3>Saisir les données du serveur</h3>
+            <form>
+                <div class="form-group">
+                    <label>
+                        <input type="text" class="form-control" placeholder="Host" ng-disabled="isConnected" ng-model="player.host">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="text" class="form-control" placeholder="Port" ng-disabled="isConnected" ng-model="player.port">
+                    </label>
+                </div>
+                    <button ng-if="isConnected" class="btn btn-default" ng-click="disconnect()">Se desconnecter</button>
+                    <button ng-if="!isConnected" class="btn btn-default" ng-click="connect(player)">Se connecter</button>
+                    <button ng-if="!isConnected" class="btn btn-default" ng-click="connect()">Connection par défaut</button>
+            </form>
+        </div>
     </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <button class="btn btn-default" >Rechercher des serveurs</button>
+            <div ng-if="servers.length > 0 ">
+                <p>aqui algo</p>
+                {{servers}}
+                <div ng-repeat="server in servers" class="item" ng-click="select(server)">
+                    {{server.address[0].item.addr}}</div>
+            </div>
+        </div>
+    </div>
+

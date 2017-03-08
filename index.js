@@ -1,7 +1,6 @@
 'use strict';
 
 const electron = require('electron');
-const MPD = require('node-mpd');
 const app = electron.app;
 const path = require('path');
 const url = require('url');
