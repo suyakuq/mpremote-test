@@ -4,12 +4,14 @@
   "description": "MPD Client for electron",
   "main": "index.js",
   "scripts": {
-    "start": "browserify js/app.js -x node-mpd -x libnmap -x os -o js/bundle.js --debug && electron index.js"
+    "browserifyApp": "browserify js/app.js -x node-mpd -x libnmap -x os -o js/bundle.js --debug",
+    "start": "npm run browserifyApp && electron index.js"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^1.6.1"
+    "electron": "^1.6.1",
+    "watch": "^1.0.2"
   },
   "dependencies": {
     "angular": "^1.6.2",
