@@ -5,7 +5,7 @@ module.exports = function($rootScope, electron) {
 
     var showAlert = function (message) {
         electron.dialog.showMessageBox({
-            title: 'message',
+            title: 'Status',
             message: message
         });
     };

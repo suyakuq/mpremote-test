@@ -18,7 +18,7 @@ function main_ctrl($scope, MPDService) {
     });
 
     $scope.$on('onDisconnect', function(event, data){
-        $scope.player = undefined;
+        $scope.player = null;
     });
 
     $scope.addSongs = function () {

@@ -4,7 +4,6 @@
 function settings_ctrl($scope, $location, MPDService) {
 
     $scope.player = MPDService.getPlayer();
-    $scope.isConnected = $scope.player != undefined  && $scope.player.status;
     $scope.servers = [];
 
         $scope.$on('onConnect', function(event, data){
@@ -14,7 +13,7 @@ function settings_ctrl($scope, $location, MPDService) {
         });
 
         $scope.$on('onDisconnect', function(event, data){
-            $scope.player = undefined;
+            $scope.player = null;
             $scope.isConnected = false;
         });
 

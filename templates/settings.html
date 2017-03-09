@@ -4,17 +4,17 @@
             <form>
                 <div class="form-group">
                     <label>
-                        <input type="text" class="form-control" placeholder="Host" ng-disabled="isConnected" ng-model="player.host">
+                        <input type="text" class="form-control" placeholder="Host" ng-disabled="player" ng-model="player.host">
                     </label>
                 </div>
                 <div class="form-group">
                     <label>
-                        <input type="text" class="form-control" placeholder="Port" ng-disabled="isConnected" ng-model="player.port">
+                        <input type="text" class="form-control" placeholder="Port" ng-disabled="player" ng-model="player.port">
                     </label>
                 </div>
-                    <button ng-if="isConnected" class="btn btn-default" ng-click="disconnect()">Se desconnecter</button>
-                    <button ng-if="!isConnected" class="btn btn-default" ng-click="connect(player)">Se connecter</button>
-                    <button ng-if="!isConnected" class="btn btn-default" ng-click="connect()">Connection par défaut</button>
+                    <button ng-if="player" class="btn btn-default" ng-click="disconnect()">Se desconnecter</button>
+                    <button ng-if="!player" class="btn btn-default" ng-click="connect(player)">Se connecter</button>
+                    <button ng-if="!player" class="btn btn-default" ng-click="connect()">Connection par défaut</button>
             </form>
         </div>
     </div>
