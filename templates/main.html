@@ -28,3 +28,90 @@
             <h2>Your MUSIC</h2>
         </div>
 </div>
+<section class="row content">
+    <div class="row text-uppercase text-center">
+        <h1>Your musics</h1>
+    </div>
+    <div>
+        <div class="col-sm-3 waiting-list">
+            <h3>Waiting list</h3>
+            <div>
+                <div class="row">
+                    <div class="col-sm-8"><a href="">{{song 1}}</a></div>
+                    <div class="col-sm-4 text-right">
+                        <button id="next"><i class="fa fa-plus-square-o" aria-hidden="true"></i></button>
+                        <button id="next"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+                <div class="row selected">
+                    <div class="col-sm-8"><a href="">{{song 2 selected}}</a></div>
+                    <div class="col-sm-4 text-right">
+                        <button id="next"><i class="fa fa-plus-square-o" aria-hidden="true"></i></button>
+                        <button id="next"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-8"><a href="">{{song 3}}</a></div>
+                    <div class="col-sm-4 text-right">
+                        <button id="next"><i class="fa fa-plus-square-o" aria-hidden="true"></i></button>
+                        <button id="next"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="col-sm-6 classic-list">
+                <h3>Genres</h3>
+                <div>
+                    <div class="row">
+                        <div class="col-sm-12"><a href="">{{genre 1}}</a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 classic-list">
+                <h3>Albums</h3>
+                <div>
+                    <div class="row">
+                        <div class="col-sm-12"><a href="">{{album 1}}</a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 classic-list">
+                <h3>Playlists</h3>
+                <div>
+                    <div class="row">
+                        <div class="col-sm-8"><a href="">{{playlist 1}}</a></div>
+                        <div class="col-sm-4 text-right">
+                            <button id="next"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button class="btn-add">Add</button>
+                </div>
+            </div>
+            <div class="col-sm-6 classic-list">
+                <h3>Composers</h3>
+                <div>
+                    <div class="row">
+                        <div class="col-sm-12"><a href="">{{composer 1}}</a></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12"><a href="">{{composer 2}}</a></div>
+                    </div>
+                    <div class="row selected">
+                        <div class="col-sm-12"><a href="">{{composer 3 selected}}</a></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12"><a href="">{{composer 4}}</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 search-list classic-list">
+            <div class="row text-center">
+                <input class="col-sm-10 col-sm-offset-1" type="text" placeholder="Search (genres, albums, musics ...)" />
+            </div>
+        </div>
+    </div>
+</section>
