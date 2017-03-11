@@ -1,0 +1,73 @@
+
+body{
+    font-family: $fontContent;
+}
+
+.content{
+    background-color: $colorBackground2;
+    button{
+        color: $colorSecondary1;
+    }
+    .classic-list, .waiting-list{
+        border: 3px solid $colorBackground2;
+    }
+    .classic-list{
+        background-color: $colorWhite;
+        height: 200px;
+        a{
+            color: $colorPrincipal1;
+        }
+        .selected{
+            background-color: $colorPrincipal1;
+            a{
+                color: $colorBackground2;
+            }
+        }
+    }
+    .search-list{
+        height: 400px;
+        padding-top: 20px;
+        input{
+            border-bottom: 1px solid $colorSecondary2;
+            color: $colorSecondary1;
+            text-align: center;
+        }
+    }
+    .waiting-list{
+        background-color: $colorPrincipal1;
+        height: 400px;
+        a{
+            color: $colorBackground2;
+        }
+        .selected{
+            background-color: $colorBackground2;
+            a{
+                color: $colorPrincipal1;
+            }
+        }
+    }
+}
+
+h1, h2{font-family: $fontTitle1;}
+h1{color: $colorPrincipal1;}
+h2{color: $colorPrincipal2;}
+
+h3{
+    color: $colorBackground1;
+    font-family: $fontTitle2;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+header{
+    background-color: $colorBackground1;
+}
+
+.player{
+    .remote{
+        button{
+            color: $colorPrincipal1;
+            font-size: 2em;
+        }
+    }
+}
