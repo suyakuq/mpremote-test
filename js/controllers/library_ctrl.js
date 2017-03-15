@@ -2,6 +2,8 @@ function library_ctrl($scope, MPDService) {
 
     MPDService.getAllSongs();
 
+    MPDService.getAlbums();
+
     $scope.$on('onSongsReceived', function(event, data){
         $scope.$apply(function(){
             $scope.songs = data;

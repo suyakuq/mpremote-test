@@ -112,9 +112,16 @@ module.exports = function($rootScope, electron) {
                 mpd.updateStatus();
             }
         },
-        getAllSongs : function(){
+        getAllSongs : function() {
             mpd.getSongs(function(data){
                 $rootScope.$broadcast('onSongsReceived',data);
+            });
+        },
+        getAlbums : function() {
+            var album = 'album', filterType = 'group', filter = 'albumartist';
+            mpd.getList(album, filterType, filter, function(data){
+                console.log(data);
+                //$rootScope.$broadcast('onAlbumsReceived', data);
             });
         }
     }
