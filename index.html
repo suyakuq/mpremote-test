@@ -5,7 +5,7 @@
     <title>MPRemote: Audio player</title>
     <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
     <script>if (window.module) module = window.module;</script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
     <link rel="stylesheet" href="css/bootstrap/stylesheets/styles.css">
     <link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/style.css">
@@ -16,7 +16,10 @@
       <!-- header -->
       <header class="row">
           <div class="col-sm-4 col-sm-offset-4 text-center">
-              <img class="col-sm-10 col-sm-offset-1" src="images/logo.png" />
+              <a ui-sref="main"><img class="col-sm-10 col-sm-offset-1" src="images/logo.png" /></a>
+          </div>
+          <div class="col-sm-2 col-sm-offset-2 text-right">
+              <a ui-sref="settings"><img class="col-sm-10 col-sm-offset-1" src="images/cog.png" /></a>
           </div>
       </header>
   <div>
@@ -24,7 +27,6 @@
       <ui-view></ui-view>
     </div>
   </div>
-  <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
   <script type="text/javascript" src="js/bundle.js"></script>
   <script type="text/javascript" src="js/electangular.js"></script>
   </body>
