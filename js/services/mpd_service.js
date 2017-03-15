@@ -30,10 +30,6 @@ module.exports = function($rootScope, electron) {
                 $rootScope.$broadcast('onUpdate',mpd);
             });
 
-            mpd.on('songs', function(songs){
-                $rootScope.$broadcast('onSongsReceived',songs);
-            });
-
             mpd.connect();
 
         },
@@ -107,8 +103,9 @@ module.exports = function($rootScope, electron) {
             }
         },
         getAllSongs : function(){
-            
-             return mpd.getSongs();
+            mpd.getSongs(function(data){
+                $rootScope.$broadcast('onSongsReceived',data);
+            });
         }
     }
 };
