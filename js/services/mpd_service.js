@@ -120,8 +120,7 @@ module.exports = function($rootScope, electron) {
         getAlbums : function() {
             var album = 'album', filterType = 'group', filter = 'albumartist';
             mpd.getList(album, filterType, filter, function(data){
-                console.log(data);
-                //$rootScope.$broadcast('onAlbumsReceived', data);
+                $rootScope.$broadcast('onAlbumsReceived', data);
             });
         }
     }

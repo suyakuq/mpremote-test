@@ -10,6 +10,12 @@ function library_ctrl($scope, MPDService) {
         });
     });
 
+    $scope.$on('onAlbumsReceived', function(event, data){
+        $scope.$apply(function(){
+            $scope.albums = data;
+        });
+    });
+
     $scope.addToQueue = function(song){
         MPDService.add(song);
     }
