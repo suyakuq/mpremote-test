@@ -93,6 +93,11 @@ module.exports = function($rootScope, electron) {
                console.log(mpd.playlist);
             });
         },
+        delete : function (element) {
+            mpd.delete(element, function() {
+                console.log(mpd.playlist);
+            })
+        },
         volPlus: function () {
             var newVolume = parseInt(mpd.status.volume) + volume_interval;
             if(newVolume <= 100) {

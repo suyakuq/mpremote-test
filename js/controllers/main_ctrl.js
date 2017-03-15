@@ -59,12 +59,18 @@ function main_ctrl($scope, MPDService) {
     $scope.playAt = function (pos) {
         MPDService.playAt(pos);
     };
+
+    //$scope add ne sert plus à rien
     $scope.add = function (name) {
         MPDService.add(name);
         MPDService._updatePlaylist(function () {
             //PLAYER.modules.playlist.loadSongs(mpd.playlist);
         });
     };
+
+    $scope.delete = function(position){
+        MPDService.delete(position);
+    }
 
     $scope.volPlus = function () {
         console.log("plus");
