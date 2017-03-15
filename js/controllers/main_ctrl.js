@@ -4,12 +4,24 @@
 function main_ctrl($scope, MPDService) {
 
     $scope.player = MPDService.getPlayer();
+    $scope.$on('onConnect', function (event, data) {
+        $scope.player = data;
+        console.log("connected on main ctrl");
+    });
 
     $scope.$on('onUpdate', function (event, data) {
         $scope.$apply(function () {
-            $scope.player = data ? data : undefined;
+            var currentSong = data.status.song; //Recupere chanson en cours
+            var songName = data.playlist[currentSong].file; //Associe chanson en cours a son nom
+            data.currentSong = songName;
+            $scope.player = data;
+            console.log($scope.player);
         });
 
+    });
+
+    $scope.$on('onDisconnect', function(event, data){
+        $scope.player = null;
     });
 
     $scope.addSongs = function () {
@@ -35,6 +47,10 @@ function main_ctrl($scope, MPDService) {
     };
     $scope.clear = function () {
         MPDService.clear();
+        MPDService._updatePlaylist(function () {
+            //PLAYER.modules.playlist.loadSongs(mpd.playlist);
+        });
+
     };
     $scope.playAt = function (pos) {
         MPDService.playAt(pos);
