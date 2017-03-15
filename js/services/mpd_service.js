@@ -56,6 +56,13 @@ module.exports = function($rootScope, electron) {
                 console.log('paused');
             });
         },
+
+        random: function () {
+            mpd.toggle(function () {
+               console.log("random");
+            });
+        },
+
         prev : function () {
             mpd.prev(function () {
                console.log("prev");

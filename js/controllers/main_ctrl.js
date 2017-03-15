@@ -36,6 +36,10 @@ function main_ctrl($scope, MPDService) {
         MPDService.pause();
     };
 
+    $scope.random = function () {
+      MPDService.random();
+    };
+
     $scope.next = function () {
         MPDService.next();
     };
