@@ -30,6 +30,10 @@ module.exports = function($rootScope, electron) {
                 $rootScope.$broadcast('onUpdate',mpd);
             });
 
+            mpd.on('songs', function(songs){
+                $rootScope.$broadcast('onSongsReceived',songs);
+            });
+
             mpd.connect();
 
         },
@@ -101,6 +105,10 @@ module.exports = function($rootScope, electron) {
                 mpd.volume(newVolume);
                 mpd.updateStatus();
             }
+        },
+        getAllSongs : function(){
+            
+             return mpd.getSongs();
         }
     }
 };
