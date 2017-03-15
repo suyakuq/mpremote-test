@@ -11,7 +11,10 @@ function main_ctrl($scope, MPDService) {
 
     $scope.$on('onUpdate', function (event, data) {
         $scope.$apply(function () {
-            $scope.player = data ? data : undefined;
+            var currentSong = data.status.song; //Recupere chanson en cours
+            var songName = data.playlist[currentSong].file; //Associe chanson en cours a son nom
+            data.currentSong = songName;
+            $scope.player = data;
             console.log($scope.player);
         });
 
@@ -31,6 +34,10 @@ function main_ctrl($scope, MPDService) {
 
     $scope.pause = function () {
         MPDService.pause();
+    };
+
+    $scope.random = function () {
+      MPDService.random();
     };
 
     $scope.next = function () {

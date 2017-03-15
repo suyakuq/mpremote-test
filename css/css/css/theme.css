@@ -1,0 +1,81 @@
+@import url("https://fonts.googleapis.com/css?family=Lato|Open+Sans|Pathway+Gothic+One");
+button, input {
+  background-color: inherit;
+  border: none; }
+
+button {
+  transition: 0.2s; }
+  button:hover {
+    opacity: 0.7; }
+
+.btn-add {
+  background-color: #99003a;
+  color: #f8f8f8 !important;
+  font-family: "Pathway Gothic One";
+  font-size: 1.3em;
+  padding: 5px 15px;
+  text-transform: uppercase;
+  transition: 0.5s; }
+
+body {
+  font-family: Calibri; }
+
+.content {
+  background-color: #f8f8f8; }
+  .content button {
+    color: #99003a; }
+  .content .classic-list, .content .waiting-list {
+    border: 3px solid #f8f8f8; }
+  .content .classic-list {
+    background-color: #fff;
+    height: 200px; }
+    .content .classic-list a {
+      color: #008e90; }
+    .content .classic-list .selected {
+      background-color: #008e90; }
+      .content .classic-list .selected a {
+        color: #f8f8f8; }
+  .content .search-list {
+    height: 400px;
+    padding-top: 20px; }
+    .content .search-list input {
+      border-bottom: 1px solid #490054;
+      color: #99003a;
+      text-align: center; }
+  .content .waiting-list {
+    background-color: #008e90;
+    height: 400px; }
+    .content .waiting-list a {
+      color: #f8f8f8; }
+    .content .waiting-list .selected {
+      background-color: #f8f8f8; }
+      .content .waiting-list .selected a {
+        color: #008e90; }
+
+h1, h2 {
+  font-family: "Open Sans"; }
+
+h1 {
+  color: #008e90; }
+
+h2 {
+  color: #313131; }
+
+h3 {
+  color: #0e0e0e;
+  font-family: "Lato";
+  text-align: center;
+  text-transform: uppercase; }
+
+header {
+  background-color: #0e0e0e; }
+
+.player .remote button {
+  color: #008e90;
+  font-size: 2em; }
+
+#settings {
+  color: #008e90;
+  font-size: 2em; }
+
+/*# sourceMappingURL=theme.css.map */

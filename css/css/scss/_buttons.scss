@@ -1,0 +1,22 @@
+
+button, input{
+    background-color: inherit;
+    border: none;
+}
+
+button{
+    transition: 0.2s;
+    &:hover{
+        opacity: 0.7;
+    }
+}
+
+.btn-add{
+    background-color: $colorSecondary1;
+    color: $colorBackground2 !important;
+    font-family: $fontOther;
+    font-size: 1.3em;
+    padding: 5px 15px;
+    text-transform: uppercase;
+    transition: 0.5s;
+}
