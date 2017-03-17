@@ -78,4 +78,14 @@ header {
   color: #008e90;
   font-size: 2em; }
 
+.item {
+  padding: 10px 0; }
+  .item span {
+    cursor: pointer; }
+  .item .fa-trash {
+    color: #99003a; }
+
+a h2 {
+  color: #99003a; }
+
 /*# sourceMappingURL=theme.css.map */
