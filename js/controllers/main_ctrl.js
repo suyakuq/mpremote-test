@@ -4,19 +4,37 @@
 function main_ctrl($scope, MPDService) {
 
     $scope.player = MPDService.getPlayer();
+    //$scope.player.currentSong = '';
+    $scope.songTime = 0;
+    var checkTimer = function (data) {
+        if(data.event == 'player'){
+            console.log(data.mpd);
+            console.log($scope.player);
+            var currentSong = $scope.player.status.song;
+            $scope.$apply(function () {
+                $scope.player.currentSong = {
+                    name : $scope.player.playlist[currentSong].file,
+                    time: $scope.player.playlist[currentSong].time
+                };
+
+            });
+        }
+
+    };
+    //checkTimer();
+
+    var stopTimer = function () {
+        $scope.$broadcast('timer-stop');
+    };
+
     $scope.$on('onConnect', function (event, data) {
         $scope.player = data;
         console.log("connected on main ctrl");
     });
 
     $scope.$on('onUpdate', function (event, data) {
-        $scope.$apply(function () {
-            var currentSong = data.status.song; //Recupere chanson en cours
-            var songName = data.playlist[currentSong].file; //Associe chanson en cours a son nom
-            data.currentSong = songName;
-            $scope.player = data;
-            console.log($scope.player);
-        });
+        console.log(data.event);
+        checkTimer(data);
 
     });
 
@@ -47,7 +65,7 @@ function main_ctrl($scope, MPDService) {
         MPDService.prev();
     };
     $scope.stop = function () {
-        MPDService.stop();
+        MPDService.stop(stopTimer);
     };
     $scope.clear = function () {
         MPDService.clear();

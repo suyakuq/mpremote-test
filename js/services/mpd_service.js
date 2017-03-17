@@ -27,7 +27,7 @@ module.exports = function($rootScope, electron) {
                 callback(mpd);
             });
             mpd.on('update', function (updated) {
-                $rootScope.$broadcast('onUpdate',mpd);
+                $rootScope.$broadcast('onUpdate', {mpd: mpd, event: updated});
             });
 
             mpd.connect();
@@ -48,8 +48,8 @@ module.exports = function($rootScope, electron) {
         play : function () {
             console.log("play");
             mpd.play(function () {
-                console.log("playing");
-            })
+
+            });
         },
         pause : function () {
             mpd.pause(function () {
@@ -73,10 +73,8 @@ module.exports = function($rootScope, electron) {
                 console.log("next");
             })
         },
-        stop: function () {
-            mpd.stop(function () {
-               console.log("stopped");
-            });
+        stop: function (callback) {
+            mpd.stop(callback);
         },
         clear : function () {
             mpd.clear(function () {
@@ -85,7 +83,7 @@ module.exports = function($rootScope, electron) {
         },
         playAt: function (pos) {
             mpd.playAt(pos, function () {
-                console.log("playing at");
+
             });
         },
         add: function (element) {
