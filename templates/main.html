@@ -35,6 +35,14 @@
 				<!-- <img class="col-sm-4 col-sm-offset-4" src="{{image}}" alt="{{image}}" /> -->
 				<span>{{player.currentSong.name}}</span>
 			</div>
+			<div ng-if="player && player.currentSong" class="row">
+				<timer auto-start="false" interval="1000" start-time-attr="0"> / {{player.currentSong.time}} secondes</timer>
+				<!--<timer auto-start="false" countdown="countdownVal" interval="1000"><div class="progress progress-striped active {{displayProgressActive}}"style="height: 30px;">
+					{{countdown}}
+					<div class="progress-bar" role="progressbar"  aria-valuemin="0" aria-valuemax="100"
+						 style="min-width: 0em;width: {{progressBar}}%;"></div> </div>
+				</timer>-->
+			</div>
 		</div>
 		<div class="row remote">
 			<div class="col-sm-4 col-sm-offset-1">
@@ -44,15 +52,7 @@
 				<button id="stop" ng-click="stop()"><i class="fa fa-stop" aria-hidden="true"></i></button>
 				<button id="next" ng-click="next()"><i class="fa fa-step-forward" aria-hidden="true"></i></button>
 			</div>
-			<div ng-if="player && player.currentSong" class="col-sm-4">
-				<timer auto-start="false" interval="1000" start-time-attr="0"> / {{player.currentSong.time}} secondes</timer>
-				<!--<timer auto-start="false" countdown="countdownVal" interval="1000"><div class="progress progress-striped active {{displayProgressActive}}"style="height: 30px;">
-					{{countdown}}
-					<div class="progress-bar" role="progressbar"  aria-valuemin="0" aria-valuemax="100"
-						 style="min-width: 0em;width: {{progressBar}}%;"></div> </div>
-				</timer>-->
-			</div>
-			<div class="col-sm-2">
+			<div class="col-sm-4 col-sm-offset-3">
 				<span id="currentVol"></span>
 				<button id="volMinus" ng-click="volMinus()"><i class="fa fa-volume-down" aria-hidden="true"></i></button>
 				<button  id="volPlus" ng-click="volPlus()"><i class="fa fa-volume-up" aria-hidden="true"></i></button>
