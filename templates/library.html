@@ -1,21 +1,40 @@
 <div class="row">
     <h1 class="text-center">{{ player ? player.host : 'MPRemote' }}</h1>
-    <div class="col-sm-9 col-md-9 col-lg-3">
-        <h2>Songs :</h2>
-        <div class="padding list">
-            <div ng-repeat="song in songs" class="item">
-                {{song.file}}<button ng-click="addToQueue(song.file)"><img width="20px" height="20px" src="images/plus.png" /></button>
-            </div>
-            <hr>
-        </div>
-    </div>
-    <div class="col-sm-3 col-md-3 col-lg-3">
-        <div class="padding list">
+    <div class="col-md-4">
+     <div class="padding list">
             <h2>Albums :</h2>
-            <div ng-repeat="album in albums" class="item">
+            <div ng-repeat="album in albums" class="item" ng-click="refrechList(album)">
                 {{album}}
             </div>
-            <hr>
+        </div>
+    </div>
+        <div class="col-md-4">
+        <div class="padding list">
+            <h2>Artists :</h2>
+            <div ng-repeat="artist in artists" class="item" ng-click="refrechList(artist)">
+                <p>{{artist}}</p>
+            </div>
+        </div>
+    </div>
+        <div class="col-md-4">
+        <div class="padding list">
+            <h2>Genres :</h2>
+            <div ng-repeat="genre in genres" class="item" ng-click="refrechList(genre)">
+                <p>{{genre}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<div class="row">
+    <div class="col-md-12">
+        <h2 class="text-center">Songs :</h2>
+        <div class="padding list">
+            <div ng-repeat="song in songs" class="item">
+                <p ng-if="song.file">{{song.artist}} - {{song.title}}<button ng-click="addToQueue(song.file)"><img width="20px" height="20px" src="images/plus.png" /></button></p>
+            </div>
         </div>
     </div>
 </div>

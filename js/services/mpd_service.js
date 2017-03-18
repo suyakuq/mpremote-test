@@ -116,9 +116,23 @@ module.exports = function($rootScope, electron) {
             });
         },
         getAlbums : function() {
-            var album = 'album', filterType = 'group', filter = 'albumartist';
-            mpd.getList(album, filterType, filter, function(data){
+            mpd.getList('album', function(data){
                 $rootScope.$broadcast('onAlbumsReceived', data);
+            });
+        },
+        getArtists : function() {
+            mpd.getList('artist', function(data){
+            $rootScope.$broadcast('onArtistsReceived', data);
+            });
+        },
+        getGenres : function() {
+            mpd.getList('genre', function(data){
+                $rootScope.$broadcast('onGenresReceived', data);
+            });
+        },
+        refrechSongs : function(search) {
+            mpd.findRequest(search, function(data){
+                $rootScope.$broadcast('onResonseFindRequest', data);
             });
         }
     }
