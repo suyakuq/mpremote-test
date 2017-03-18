@@ -6,7 +6,7 @@ function settings_ctrl($scope, $location, MPDService) {
     $scope.player = MPDService.getPlayer();
     $scope.servers = [];
 
-    const defaultIp = '192.168.43.98';
+    const defaultIp = '192.168.43.215';
     const defaultPort = 6600;
 
     $scope.connect = function (connectionParams) {

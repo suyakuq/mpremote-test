@@ -137,6 +137,31 @@ module.exports = function($rootScope, electron) {
             mpd.findRequest(search, function(data){
                 $rootScope.$broadcast('onResonseFindRequest', data);
             });
+        },
+        getPlaylists : function() {
+            mpd.listOfPlaylists(function(data){
+                $rootScope.$broadcast('onPlaylistsReceived', data);
+            });
+        },
+        getPlaylistsSongs : function(name) {
+            mpd.playlistSongs(name, function(data){
+                $rootScope.$broadcast('onPlaylistSongsReceived', data);
+            })
+        },
+        addPlaylist : function(name) {
+            mpd.newPlaylist(name, function(response){
+                return response;
+            });
+        },
+        removePlaylist : function(name) {
+            mpd.removePlayList(name, function(response){
+                return response;
+            })
+        },
+        addSongToPlaylist : function(name, song) {
+            mpd.addToPlaylist(name, song, function(response){
+                return response;
+            });
         }
     }
 };
