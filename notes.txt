@@ -1,0 +1,6 @@
+# installation de nodejs
+# on ouvre la console:
+#	npm install -g electron
+# 	npm install -g browserify
+# dans settings_ctrl.js: modifier la constante "defaultIP"
+# dans la console: npm start
