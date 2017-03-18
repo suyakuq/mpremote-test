@@ -20,25 +20,23 @@ module.exports = function($rootScope, electron) {
             return mpd;
         },
 
-        connect : function (host, port) {
+        connect : function (host, port, callback) {
             mpd = new MPD({host: host, port : port});
             mpd.on('ready', function (status, server) {
                 showAlert("Connecté à "+server.name+", host: "+mpd.host);
-                $rootScope.$broadcast('onConnect',mpd);
+                callback(mpd);
             });
             mpd.on('update', function (updated) {
-                $rootScope.$broadcast('onUpdate',mpd);
+                $rootScope.$broadcast('onUpdate', {mpd: mpd, event: updated});
             });
 
             mpd.connect();
 
         },
-        disconnect: function () {
-            console.log("disconnected");
+        disconnect: function (callback) {
             mpd.disconnect();
-            mpd.on('update', function () {
-                $rootScope.$broadcast('onUpdate', false);
-            });
+            mpd = null;
+            callback();
         }
         ,
 
@@ -50,14 +48,21 @@ module.exports = function($rootScope, electron) {
         play : function () {
             console.log("play");
             mpd.play(function () {
-                console.log("playing");
-            })
+
+            });
         },
         pause : function () {
             mpd.pause(function () {
                 console.log('paused');
             });
         },
+
+        random: function () {
+            mpd.toggle(function () {
+               console.log("random");
+            });
+        },
+
         prev : function () {
             mpd.prev(function () {
                console.log("prev");
@@ -68,10 +73,8 @@ module.exports = function($rootScope, electron) {
                 console.log("next");
             })
         },
-        stop: function () {
-            mpd.stop(function () {
-               console.log("stopped");
-            });
+        stop: function (callback) {
+            mpd.stop(callback);
         },
         clear : function () {
             mpd.clear(function () {
@@ -80,13 +83,18 @@ module.exports = function($rootScope, electron) {
         },
         playAt: function (pos) {
             mpd.playAt(pos, function () {
-                console.log("playing at");
+
             });
         },
         add: function (element) {
             mpd.add(element, function () {
-               console.log("added");
+               console.log(mpd.playlist);
             });
+        },
+        delete : function (element) {
+            mpd.delete(element, function() {
+                console.log(mpd.playlist);
+            })
         },
         volPlus: function () {
             var newVolume = parseInt(mpd.status.volume) + volume_interval;
@@ -101,6 +109,31 @@ module.exports = function($rootScope, electron) {
                 mpd.volume(newVolume);
                 mpd.updateStatus();
             }
+        },
+        getAllSongs : function() {
+            mpd.getSongs(function(data){
+                $rootScope.$broadcast('onSongsReceived',data);
+            });
+        },
+        getAlbums : function() {
+            mpd.getList('album', function(data){
+                $rootScope.$broadcast('onAlbumsReceived', data);
+            });
+        },
+        getArtists : function() {
+            mpd.getList('artist', function(data){
+            $rootScope.$broadcast('onArtistsReceived', data);
+            });
+        },
+        getGenres : function() {
+            mpd.getList('genre', function(data){
+                $rootScope.$broadcast('onGenresReceived', data);
+            });
+        },
+        refrechSongs : function(search) {
+            mpd.findRequest(search, function(data){
+                $rootScope.$broadcast('onResonseFindRequest', data);
+            });
         }
     }
 };

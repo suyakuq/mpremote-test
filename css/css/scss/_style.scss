@@ -71,3 +71,24 @@ header{
         }
     }
 }
+
+#settings{
+    color: $colorPrincipal1;
+    font-size: 2em;
+}
+
+.item {
+    padding: 10px 0;
+    span{
+        cursor: pointer;
+    }
+    .fa-trash{
+        color: $colorSecondary1;
+    }
+}
+
+a{
+    h2{
+        color: $colorSecondary1; //PROVISOIRE
+    }
+}

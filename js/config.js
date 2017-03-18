@@ -14,6 +14,8 @@ var config = {
             url: '/', templateUrl: 'templates/main.html', controller: 'MainCtrl'
         }).state('settings', {
             url: '/settings', templateUrl: 'templates/settings.html', controller: 'SettingsCtrl'
+        }).state('library', {
+            url: '/library', templateUrl: 'templates/library.html', controller: 'LibraryCtrl'
         });
 
         // if none of the above states are matched, use this as the fallback

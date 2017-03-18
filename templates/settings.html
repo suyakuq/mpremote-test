@@ -1,5 +1,9 @@
     <div class="row">
-        <div class="col-md-6 col-md-offset-3">
+        <div ng-if="player" class="col-md-6 col-md-offset-3" >
+            <p>Vous &ecaron;tes connect&eacute; &agrave; {{player.host}}:{{player.port}}</p>
+            <button class="btn btn-default" ng-click="disconnect()">Se déconnecter</button>
+        </div>
+        <div ng-if="!player" class="col-md-6 col-md-offset-3">
             <h3>Saisir les données du serveur</h3>
             <form>
                 <div class="form-group">
@@ -12,9 +16,8 @@
                         <input type="text" class="form-control" placeholder="Port" ng-disabled="player" ng-model="player.port">
                     </label>
                 </div>
-                    <button ng-if="player" class="btn btn-default" ng-click="disconnect()">Se desconnecter</button>
-                    <button ng-if="!player" class="btn btn-default" ng-click="connect(player)">Se connecter</button>
-                    <button ng-if="!player" class="btn btn-default" ng-click="connect()">Connection par défaut</button>
+                <button class="btn btn-default" ng-click="connect(player)">Se connecter</button>
+                <button class="btn btn-default" ng-click="connect()">Connexion par défaut</button>
             </form>
         </div>
     </div>
@@ -30,4 +33,3 @@
             </div>
         </div>
     </div>
-
