@@ -46,20 +46,23 @@ module.exports = function($rootScope, electron) {
             });
         },
         play : function () {
-            console.log("play");
             mpd.play(function () {
 
             });
         },
         pause : function () {
             mpd.pause(function () {
-                console.log('paused');
             });
         },
 
         random: function () {
-            mpd.toggle(function () {
-               console.log("random");
+            mpd.random(mpd.status.random == 0 ? 1 : 0, function () {
+            });
+        },
+
+        repeat: function () {
+            mpd.repeat(mpd.status.repeat == 0 ? 1 : 0, function () {
+                console.log(mpd.status);
             });
         },
 
@@ -73,8 +76,8 @@ module.exports = function($rootScope, electron) {
                 console.log("next");
             })
         },
-        stop: function (callback) {
-            mpd.stop(callback);
+        stop: function () {
+            mpd.stop();
         },
         clear : function () {
             mpd.clear(function () {

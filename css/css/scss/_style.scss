@@ -68,6 +68,10 @@ header{
         button{
             color: $colorPrincipal1;
             font-size: 2em;
+
+            &.btn-selected{
+                color: $colorBackground1;
+            }
         }
     }
 }

@@ -4,41 +4,45 @@
 function main_ctrl($scope, MPDService) {
 
     $scope.player = MPDService.getPlayer();
-    //$scope.player.currentSong = '';
-    $scope.songTime = 0;
-    var checkTimer = function (data) {
-        if(data.event == 'player'){
-            console.log(data.mpd);
-            console.log($scope.player);
-            var currentSong = $scope.player.status.song;
-            $scope.$apply(function () {
-                $scope.player.currentSong = {
-                    name : $scope.player.playlist[currentSong].file,
-                    time: $scope.player.playlist[currentSong].time
-                };
-
-            });
-        }
-
-    };
-    //checkTimer();
-
-    var stopTimer = function () {
-        $scope.$broadcast('timer-stop');
-    };
-
-    $scope.$on('onConnect', function (event, data) {
-        $scope.player = data;
-        console.log("connected on main ctrl");
-    });
+    var actualStatus = {};
 
     $scope.$on('onUpdate', function (event, data) {
         console.log(data.event);
-        checkTimer(data);
-
+        if(data.event == 'player'){
+            if(data.mpd.status.state == 'play'){
+                var currentSong = $scope.player.playlist[$scope.player.status.song];
+                $scope.$apply(function () {
+                    $scope.player.currentSong = {name : currentSong.artist+ " - "+ currentSong.title, time: moment().startOf('day')                            .seconds($scope.player.status.time.length)
+                            .format('mm:ss')
+                    }
+                });
+                if(actualStatus.actualSongId != data.mpd.status.song || actualStatus.state != 'pause'){
+                    console.log('restart');
+                    $scope.$broadcast('timer-start');
+                }else{
+                    console.log('resume');
+                    $scope.$broadcast('timer-resume');
+                }
+                actualStatus.state = data.mpd.status.state;
+                actualStatus.actualSongId = data.mpd.status.song;
+            }else {
+                actualStatus.state = data.mpd.status.state;
+                actualStatus.actualSongId = data.mpd.status.song;
+                if (data.mpd.status.state == 'stop') {
+                    $scope.$broadcast('timer-stop');
+                } else if (data.mpd.status.state == 'pause') {
+                    $scope.$broadcast('timer-stop');
+                }
+            }
+        }else if(data.event == 'options'){
+            $scope.$apply(function () {
+               $scope.player.status = data.mpd.status;
+            });
+        }
     });
 
     $scope.$on('onDisconnect', function(event, data){
+        $scope.$broadcast('timer-clear');
         $scope.player = null;
     });
 
@@ -58,14 +62,19 @@ function main_ctrl($scope, MPDService) {
       MPDService.random();
     };
 
+    $scope.repeat = function () {
+        MPDService.repeat();
+    };
+
     $scope.next = function () {
+        $scope.$broadcast('timer-stop');
         MPDService.next();
     };
     $scope.prev = function () {
         MPDService.prev();
     };
     $scope.stop = function () {
-        MPDService.stop(stopTimer);
+        MPDService.stop();
     };
     $scope.clear = function () {
         MPDService.clear();

@@ -73,6 +73,8 @@ header {
 .player .remote button {
   color: #008e90;
   font-size: 2em; }
+  .player .remote button.btn-selected {
+    color: #0e0e0e; }
 
 #settings {
   color: #008e90;
