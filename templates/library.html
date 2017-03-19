@@ -29,10 +29,11 @@
             <h2>Playlists :</h2>
             <div ng-repeat="pl in playlists" class="item" ng-click="getPlaylistSongs(pl)">
                 {{pl}}<i class="fa fa-trash" aria-hidden="true" ng-click="removePlaylist(pl); $event.stopPropagation();"></i>
+                <i class="fa fa-plus" aria-hidden="true" ng-click="loadPlaylist(pl); $event.stopPropagation();"></i>
             </div>
             <form ng-submit="addPlaylist(playlist.name)">
-                <input type="text" ng-model="playlist.name" name="text" />
-                <input type="submit" id="submit" value="Ajouter" />
+                <input type="text" ng-model="playlist.name" name="text" class="form-control"/>
+                <input type="submit" id="submit" value="Ajouter" class="btn btn-primary"/>
             </form>
         </div>
     </div>
@@ -44,15 +45,19 @@
     <div class="col-md-12">
         <h2 class="text-center">Songs :</h2>
         <div class="padding list">
-            <div ng-repeat="song in songs track by $index" class="item" ng-click="addToPlaylist(song.file)">
-                <p ng-if="song.file">{{song.artist}} - {{song.title}}<button ng-click="selectSong(song);" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus" aria-hidden="true" ng-click="openModal(song)"></i></p>
+            <div ng-repeat="song in songs track by $index" class="item">
+                <p ng-if="song.file">
+                    {{song.artist}} - {{song.title}}
+                    <i ng-click="selectSong(song);" data-toggle="modal" data-target="#playlists" class="fa fa-plus" aria-hidden="true"></i>
+                    <i ng-if="isPlaylist" class="fa fa-trash" aria-hidden="true" ng-click="deleteSongFromPlaylist(currentPlaylist,$index)"></i>
+                </p>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<!-- Modal listes des playlists-->
+<div class="modal fade" id="playlists" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">

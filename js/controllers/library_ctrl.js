@@ -1,6 +1,8 @@
 function library_ctrl($scope, MPDService) {
 
     $scope.selectedSong;
+    $scope.currentPlaylist;
+    $scope.isPlaylist = false;
 
     $scope.selectSong = function(song){
         $scope.selectedSong = song;
@@ -19,16 +21,22 @@ function library_ctrl($scope, MPDService) {
     };
 
     $scope.getPlaylistSongs = function(name){
-        MPDService.getPlaylistsSongs(name, function(data){
-            $scope.songs = data;
-        });
+        $scope.currentPlaylist = name;
+        MPDService.getPlaylistsSongs(name);
     };
 
     $scope.addSongToPlaylist = function(name, song){
-        MPDService.addSongToPlaylist(name, song, function(response){
-            console.log(response);
-        });
-    }
+        MPDService.addSongToPlaylist(name, song);
+    };
+
+    $scope.deleteSongFromPlaylist = function(name, song){
+        MPDService.deleteSongFromPlaylist(name, song);
+        $scope.songs.splice($scope.songs.indexOf(song),1);
+    };
+
+    $scope.loadPlaylist = function(name){
+        MPDService.loadPlaylist(name);
+    };
 
     $scope.removePlaylist = function(name){
         MPDService.removePlaylist(name);
@@ -42,6 +50,7 @@ function library_ctrl($scope, MPDService) {
     $scope.$on('onSongsReceived', function(event, data){
         $scope.$apply(function(){
             $scope.songs = data;
+            $scope.isPlaylist = false;
         });
     });
     $scope.$on('onAlbumsReceived', function(event, data){
@@ -62,6 +71,7 @@ function library_ctrl($scope, MPDService) {
     $scope.$on('onResonseFindRequest', function(event, data){
         $scope.$apply(function(){
             $scope.songs = data;
+            $scope.isPlaylist = false;
         });
     });
     $scope.$on('onPlaylistsReceived', function(event, data){
@@ -72,6 +82,7 @@ function library_ctrl($scope, MPDService) {
     $scope.$on('onPlaylistSongsReceived', function(event, data){
         $scope.$apply(function(){
             $scope.songs = data;
+            $scope.isPlaylist = true;
         });
     });
 

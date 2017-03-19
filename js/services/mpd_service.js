@@ -162,6 +162,16 @@ module.exports = function($rootScope, electron) {
             mpd.addToPlaylist(name, song, function(response){
                 return response;
             });
+        },
+        deleteSongFromPlaylist : function(name, song) {
+            mpd.deleteFromPlaylist(name, song, function(response){
+                return response;
+            });
+        },
+        loadPlaylist : function(name) {
+            mpd.loadPlaylist(name ,function(response){
+                return response;
+            });
         }
     }
 };
