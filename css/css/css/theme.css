@@ -90,4 +90,14 @@ header {
 a h2 {
   color: #99003a; }
 
+.notransition {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -o-transition: none !important;
+  -ms-transition: none !important;
+  transition: none !important; }
+
+.player-bar {
+  height: 5px; }
+
 /*# sourceMappingURL=theme.css.map */

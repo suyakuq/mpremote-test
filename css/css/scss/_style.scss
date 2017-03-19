@@ -96,3 +96,15 @@ a{
         color: $colorSecondary1; //PROVISOIRE
     }
 }
+
+.notransition {
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -o-transition: none !important;
+    -ms-transition: none !important;
+    transition: none !important;
+}
+
+.player-bar{
+    height: 5px;
+}

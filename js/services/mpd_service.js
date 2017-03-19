@@ -24,7 +24,7 @@ module.exports = function($rootScope, electron) {
             mpd = new MPD({host: host, port : port});
             mpd.on('ready', function (status, server) {
                 showAlert("Connecté à "+server.name+", host: "+mpd.host);
-                callback(mpd);
+                callback(mpd);;
             });
             mpd.on('update', function (updated) {
                 $rootScope.$broadcast('onUpdate', {mpd: mpd, event: updated});
