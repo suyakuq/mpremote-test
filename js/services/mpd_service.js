@@ -10,6 +10,8 @@ module.exports = function($rootScope, electron) {
         });
     };
 
+    var playerValues = {};
+
 
     var MPD = require('node-mpd');
     var mpd;
@@ -172,6 +174,9 @@ module.exports = function($rootScope, electron) {
             mpd.loadPlaylist(name ,function(response){
                 return response;
             });
+        },
+        status : function (callback) {
+            mpd.updateStatus(callback);
         }
     }
 };

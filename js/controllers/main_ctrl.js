@@ -13,7 +13,10 @@ function main_ctrl($scope, $timeout, MPDService) {
     $timeout(function () {
         $scope.player = MPDService.getPlayer();
         if($scope.player) {
-            onPlayerChange();
+            MPDService.status(function (status, server) {
+                onPlayerChange(status);
+            });
+
         }
     });
 
@@ -43,38 +46,44 @@ function main_ctrl($scope, $timeout, MPDService) {
     /**
      * Fonction qui écoute les évenements du player (play,stop,pause) Pour mettre à jour la vue
      */
-    const onPlayerChange = function () {
+    const onPlayerChange = function (playerStatus) {
 
         //Si lorsqu'on se connecte, le player est en "stop", on rédemarre le counter(nro de seconds passés)
-        if($scope.player.status.state == 'stop'){
-            actualStatus.state = $scope.player.status.state;
-            actualStatus.actualSongId = $scope.player.status.song;
+        if(!playerStatus)   playerStatus = $scope.player.status;
+
+        if(playerStatus.state == 'stop'){
+            actualStatus.state = playerStatus.state;
+            actualStatus.actualSongId = playerStatus.song;
             $scope.counter = 0;
             stopCounter();
         }else{
             //Si lorsqu'on se connecte, le player est en "play" ou "pause" on mettre à jour le titre de la musique dans la vue
             // et on maj le temps qui avait passé
-            var currentSong = $scope.player.playlist[$scope.player.status.song];
+            var currentSong = $scope.player.playlist[playerStatus.song];
+            var elapsed = 0;
+            if(playerStatus.time !== undefined){
+                elapsed = playerStatus.time.elapsed;
+            }
             $scope.$apply(function () {
                 $scope.time = currentSong.time;
-                $scope.counter = $scope.player.status.time.elapsed;
+                $scope.counter = elapsed;
                 $scope.player.currentSong = {name : currentSong.artist+ " - "+ currentSong.title
                 }
             });
-            if($scope.player.status.state == 'play'){
+            if(playerStatus.state == 'play'){
                 //si actualSongId == -1 -> C'est nous qui commençons a jouer, alors on "commence"
                 //du counter qu'on avaut, 0 si actualSongId == -1, le temps joué si on avait fait "pause"
-                if(actualStatus.actualSongId == -1 || actualStatus.state == 'pause'){
+                if(actualStatus.state == 'pause'){
                     onTimeout();
                 }else{
-                    //Si actualSongId != -1, qqn avait sélectionné "next", il faut rédemarrer le timer
+                    //Si actualSongId != -1, qqn avait sélectionné "next", il faut rédemarrer le timer");
                     restart();
                 }
-                actualStatus.state = $scope.player.status.state;
-                actualStatus.actualSongId = $scope.player.status.song;
-            }else if ($scope.player.status.state == 'pause') {
-                actualStatus.state = $scope.player.status.state;
-                actualStatus.actualSongId = $scope.player.status.song;
+                actualStatus.state = playerStatus.state;
+                actualStatus.actualSongId = playerStatus.song;
+            }else if (playerStatus.state == 'pause') {
+                actualStatus.state = playerStatus.state;
+                actualStatus.actualSongId = playerStatus.song;
                 stopCounter(true);
             }
         }
