@@ -35,6 +35,7 @@ function library_ctrl($scope, MPDService) {
     };
 
     $scope.loadPlaylist = function(name){
+        MPDService.clear();
         MPDService.loadPlaylist(name);
     };
 
