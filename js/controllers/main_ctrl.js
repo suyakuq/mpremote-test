@@ -43,6 +43,13 @@ function main_ctrl($scope, $timeout, MPDService) {
 
     var mytimeout = $timeout(onTimeout,1000);
 
+    $scope.seek = function (e) {
+        var fullProgressBarWidth = $(e.currentTarget).width();
+        var requestedPosition = e.offsetX / fullProgressBarWidth;
+        var seekTime = Math.ceil($scope.time*requestedPosition);
+        MPDService.seek(seekTime);
+    };
+
     /**
      * Fonction qui écoute les évenements du player (play,stop,pause) Pour mettre à jour la vue
      */

@@ -177,6 +177,9 @@ module.exports = function($rootScope, electron) {
         },
         status : function (callback) {
             mpd.updateStatus(callback);
+        },
+        seek: function (position, callback) {
+            mpd.seek(position,callback);
         }
     }
 };

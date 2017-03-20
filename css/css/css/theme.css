@@ -98,6 +98,7 @@ a h2 {
   transition: none !important; }
 
 .player-bar {
-  height: 5px; }
+  height: 5px;
+  cursor: pointer; }
 
 /*# sourceMappingURL=theme.css.map */
