@@ -10,7 +10,20 @@ module.exports = function($rootScope, electron) {
         });
     };
 
-    var playerValues = {};
+    var notifications = {
+        connection :  function (serverName, host) {
+            return {title: 'Connexion', options: {body: 'Connecté à ' + serverName + ", host: " + host}};
+        },
+        disconnection: function () {
+            return {title: 'Déconnexion', options: {body: 'Déconnecté du serveur'}};
+        },
+        play: function () {
+            return {title: 'Player', body: 'Playing'};
+        }
+    }
+
+
+
 
 
     var MPD = require('node-mpd');
@@ -25,8 +38,10 @@ module.exports = function($rootScope, electron) {
         connect : function (host, port, callback) {
             mpd = new MPD({host: host, port : port});
             mpd.on('ready', function (status, server) {
-                showAlert("Connecté à "+server.name+", host: "+mpd.host);
-                callback(mpd);;
+                //showAlert("Connecté à "+server.name+", host: "+mpd.host);
+                var notif = notifications.connection(server.name, mpd.host);
+                var connectNotification = new Notification(notif.title, notif.options);
+                callback();
             });
             mpd.on('update', function (updated) {
                 $rootScope.$broadcast('onUpdate', {mpd: mpd, event: updated});
@@ -37,6 +52,8 @@ module.exports = function($rootScope, electron) {
         },
         disconnect: function (callback) {
             mpd.disconnect();
+            var notif = notifications.disconnection();
+            var connectNotification = new Notification(notif.title, notif.options);
             mpd = null;
             callback();
         }

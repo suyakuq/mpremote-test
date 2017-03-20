@@ -12,10 +12,10 @@ function settings_ctrl($scope, $location, MPDService) {
     $scope.connect = function (connectionParams) {
         var ip = (connectionParams && connectionParams.host) ? connectionParams.host : defaultIp;
         var port = (connectionParams && connectionParams.port) ? connectionParams.port : defaultPort;
-        MPDService.connect(ip, port, function (data) {
-            $scope.player = data;
-            $scope.isConnected = true;
-            $location.path('/')
+        MPDService.connect(ip, port, function () {
+            $scope.$apply(function () {
+                $location.path('/');
+            });
         });
     };
 
