@@ -13,6 +13,7 @@ let mainWindow;
 function createWindow(){
 
     mainWindow = new BrowserWindow({width: 1600, height: 1200});
+    mainWindow.setMenu(null);//hide menu
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'index.html'),
         protocol: 'file:',

@@ -10,6 +10,18 @@ module.exports = function($rootScope, electron) {
         });
     };
 
+    var notifications = {
+        connection :  function (serverName, host) {
+            return {title: 'Connexion', options: {body: 'Connecté à ' + serverName + ", host: " + host}};
+        },
+        disconnection: function () {
+            return {title: 'Déconnexion', options: {body: 'Déconnecté du serveur'}};
+        },
+        play: function (music) {
+            return {title: 'Player', options: {body: 'Now playing: '+music}};
+        }
+    };
+
 
     var MPD = require('node-mpd');
     var mpd;
@@ -23,10 +35,22 @@ module.exports = function($rootScope, electron) {
         connect : function (host, port, callback) {
             mpd = new MPD({host: host, port : port});
             mpd.on('ready', function (status, server) {
-                showAlert("Connecté à "+server.name+", host: "+mpd.host);
-                callback(mpd);;
+                //showAlert("Connecté à "+server.name+", host: "+mpd.host);
+                var notif = notifications.connection(server.name, mpd.host);
+                new Notification(notif.title, notif.options);
+                if(status.state =='play'){
+                    var currentSong = mpd.playlist[mpd.status.song];
+                    var playNotif = notifications.play(currentSong.artist+" - "+currentSong.title);
+                    new Notification(playNotif.title, playNotif.options);
+                }
+                callback();
             });
             mpd.on('update', function (updated) {
+                if(updated == 'player' && mpd.status.state =='play'){
+                    var currentSong = mpd.playlist[mpd.status.song];
+                    var notif = notifications.play(currentSong.artist+" - "+currentSong.title);
+                    var playNotif = new Notification(notif.title, notif.options);
+                }
                 $rootScope.$broadcast('onUpdate', {mpd: mpd, event: updated});
             });
 
@@ -35,11 +59,11 @@ module.exports = function($rootScope, electron) {
         },
         disconnect: function (callback) {
             mpd.disconnect();
+            var notif = notifications.disconnection();
+            var connectNotification = new Notification(notif.title, notif.options);
             mpd = null;
             callback();
-        }
-        ,
-
+        },
         addSongs : function () {
             mpd.updateSongs(function (songs) {
                 console.log(songs);
@@ -172,6 +196,12 @@ module.exports = function($rootScope, electron) {
             mpd.loadPlaylist(name ,function(response){
                 return response;
             });
+        },
+        status : function (callback) {
+            mpd.updateStatus(callback);
+        },
+        seek: function (position, callback) {
+            mpd.seek(position,callback);
         }
     }
 };

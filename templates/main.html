@@ -12,8 +12,7 @@
 				<span>{{player.currentSong.name}}</span>
 			</div>
 			<div ng-if="player && player.currentSong" class="row">
-				<div class="progress player-bar">
-
+				<div class="progress player-bar" ng-click="seek($event)">
 					<div class="progress-bar notransition" role="progressbar"
 						 aria-valuenow="{{divide}}" aria-valuemin="0" aria-valuemax="{{time}}" style="min-width: 0em" ng-style="{width:divide+'%'}">
 						{{counter}}
