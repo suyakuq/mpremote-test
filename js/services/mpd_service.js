@@ -17,13 +17,10 @@ module.exports = function($rootScope, electron) {
         disconnection: function () {
             return {title: 'Déconnexion', options: {body: 'Déconnecté du serveur'}};
         },
-        play: function () {
-            return {title: 'Player', body: 'Playing'};
+        play: function (music) {
+            return {title: 'Player', options: {body: 'Now playing: '+music}};
         }
-    }
-
-
-
+    };
 
 
     var MPD = require('node-mpd');
@@ -40,10 +37,20 @@ module.exports = function($rootScope, electron) {
             mpd.on('ready', function (status, server) {
                 //showAlert("Connecté à "+server.name+", host: "+mpd.host);
                 var notif = notifications.connection(server.name, mpd.host);
-                var connectNotification = new Notification(notif.title, notif.options);
+                new Notification(notif.title, notif.options);
+                if(status.state =='play'){
+                    var currentSong = mpd.playlist[mpd.status.song];
+                    var playNotif = notifications.play(currentSong.artist+" - "+currentSong.title);
+                    new Notification(playNotif.title, playNotif.options);
+                }
                 callback();
             });
             mpd.on('update', function (updated) {
+                if(updated == 'player' && mpd.status.state =='play'){
+                    var currentSong = mpd.playlist[mpd.status.song];
+                    var notif = notifications.play(currentSong.artist+" - "+currentSong.title);
+                    var playNotif = new Notification(notif.title, notif.options);
+                }
                 $rootScope.$broadcast('onUpdate', {mpd: mpd, event: updated});
             });
 
@@ -56,9 +63,7 @@ module.exports = function($rootScope, electron) {
             var connectNotification = new Notification(notif.title, notif.options);
             mpd = null;
             callback();
-        }
-        ,
-
+        },
         addSongs : function () {
             mpd.updateSongs(function (songs) {
                 console.log(songs);
