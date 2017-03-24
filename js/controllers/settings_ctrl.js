@@ -3,7 +3,8 @@
  */
 function settings_ctrl($scope, $location, MPDService) {
 
-    $scope.player = MPDService.getPlayer();
+    //$scope.player = MPDService.getPlayer();
+    $scope.rooms = MPDService.getRooms();
     $scope.servers = [];
 
     const defaultIp = '192.168.43.98';
@@ -19,11 +20,15 @@ function settings_ctrl($scope, $location, MPDService) {
         });
     };
 
-    $scope.disconnect = function () {
-      MPDService.disconnect(function () {
+    $scope.disconnect = function (player) {
+      /*MPDService.disconnect(function () {
           $scope.player = null;
           $scope.isConnected = false;
-      });
+      });*/
+      MPDService.disconnect(player, function(response){
+          console.log(response);
+          $scope.rooms.splice($scope.rooms.indexOf(player),1);
+      })
     };
 }
 

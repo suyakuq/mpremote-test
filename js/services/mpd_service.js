@@ -24,184 +24,202 @@ module.exports = function($rootScope, electron) {
 
 
     var MPD = require('node-mpd');
-    var mpd;
+    var rooms = [];
+    var currentMPD;
+    var inc = 0;
     var volume_interval = 10;
     return{
-
+        //Return current mpd
         getPlayer:  function () {
-            return mpd;
+            return currentMPD;
+        },
+
+        //return all mpds
+        getRooms : function() {
+            return rooms;
         },
 
         connect : function (host, port, callback) {
-            mpd = new MPD({host: host, port : port});
-            mpd.on('ready', function (status, server) {
-                //showAlert("Connecté à "+server.name+", host: "+mpd.host);
-                var notif = notifications.connection(server.name, mpd.host);
-                new Notification(notif.title, notif.options);
-                if(status.state =='play'){
-                    var currentSong = mpd.playlist[mpd.status.song];
-                    var playNotif = notifications.play(currentSong.artist+" - "+currentSong.title);
-                    new Notification(playNotif.title, playNotif.options);
-                }
-                callback();
-            });
-            mpd.on('update', function (updated) {
-                if(updated == 'player' && mpd.status.state =='play'){
-                    var currentSong = mpd.playlist[mpd.status.song];
-                    var notif = notifications.play(currentSong.artist+" - "+currentSong.title);
-                    var playNotif = new Notification(notif.title, notif.options);
-                }
-                $rootScope.$broadcast('onUpdate', {mpd: mpd, event: updated});
-            });
+            rooms.push(new MPD({host: host, port : port}));
+            rooms.forEach(function(mpd) {
+                mpd.on('ready', function (status, server) {
+                    //showAlert("Connecté à "+server.name+", host: "+mpd.host);
+                    var notif = notifications.connection(server.name, mpd.host);
+                    new Notification(notif.title, notif.options);
+                    if(status.state =='play'){
+                        var currentSong = mpd.playlist[mpd.status.song];
+                        var playNotif = notifications.play(currentSong.artist+" - "+currentSong.title);
+                        new Notification(playNotif.title, playNotif.options);
+                    }
+                    callback();
+                });
+                mpd.on('update', function (updated) {
+                    if(updated == 'player' && mpd.status.state =='play'){
+                        var currentSong = mpd.playlist[mpd.status.song];
+                        var notif = notifications.play(currentSong.artist+" - "+currentSong.title);
+                        var playNotif = new Notification(notif.title, notif.options);
+                    }
+                    $rootScope.$broadcast('onUpdate', {mpd: mpd, event: updated});
+                });
+                
+                currentMPD = mpd;
+                
+            }, this);
 
-            mpd.connect();
-
+            currentMPD.connect();
         },
-        disconnect: function (callback) {
-            mpd.disconnect();
+        disconnect: function (player, callback) {
+            player.disconnect();
             var notif = notifications.disconnection();
             var connectNotification = new Notification(notif.title, notif.options);
-            mpd = null;
+            currentMPD = null;
             callback();
         },
         addSongs : function () {
-            mpd.updateSongs(function (songs) {
+            currentMPD.updateSongs(function (songs) {
                 console.log(songs);
             });
         },
         play : function () {
-            mpd.play(function () {
+            currentMPD.play(function () {
 
             });
         },
         pause : function () {
-            mpd.pause(function () {
+            currentMPD.pause(function () {
             });
         },
 
         random: function () {
-            mpd.random(mpd.status.random == 0 ? 1 : 0, function () {
+            currentMPD.random(currentMPD.status.random == 0 ? 1 : 0, function () {
             });
         },
 
         repeat: function () {
-            mpd.repeat(mpd.status.repeat == 0 ? 1 : 0, function () {
-                console.log(mpd.status);
+            currentMPD.repeat(currentMPD.status.repeat == 0 ? 1 : 0, function () {
+                console.log(currentMPD.status);
             });
         },
 
         prev : function () {
-            mpd.prev(function () {
+            currentMPD.prev(function () {
                console.log("prev");
             });
         },
         next : function () {
-            mpd.next(function () {
+            currentMPD.next(function () {
                 console.log("next");
             })
         },
         stop: function () {
-            mpd.stop();
+            currentMPD.stop();
         },
         clear : function () {
-            mpd.clear(function () {
+            currentMPD.clear(function () {
                 console.log("clear");
             });
         },
         playAt: function (pos) {
-            mpd.playAt(pos, function () {
+            currentMPD.playAt(pos, function () {
 
             });
         },
         add: function (element) {
-            mpd.add(element, function () {
-               console.log(mpd.playlist);
+            currentMPD.add(element, function () {
+               console.log(currentMPD.playlist);
             });
         },
         delete : function (element) {
-            mpd.delete(element, function() {
-                console.log(mpd.playlist);
+                currentMPD.delete(element, function() {
+                console.log(currentMPD.playlist);
             })
         },
         volPlus: function () {
-            var newVolume = parseInt(mpd.status.volume) + volume_interval;
+            var newVolume = parseInt(currentMPD.status.volume) + volume_interval;
             if(newVolume <= 100) {
-                mpd.volume(newVolume);
-                mpd.updateStatus();
+                currentMPD.volume(newVolume);
+                currentMPD.updateStatus();
             }
         },
         volMinus: function () {
-            var newVolume = parseInt(mpd.status.volume) - volume_interval;
+            var newVolume = parseInt(currentMPD.status.volume) - volume_interval;
             if (newVolume >= 0) {
-                mpd.volume(newVolume);
-                mpd.updateStatus();
+                currentMPD.volume(newVolume);
+                currentMPD.updateStatus();
             }
         },
         getAllSongs : function() {
-            mpd.getSongs(function(data){
+            currentMPD.getSongs(function(data){
                 $rootScope.$broadcast('onSongsReceived',data);
             });
         },
         getAlbums : function() {
-            mpd.getList('album', function(data){
+            currentMPD.getList('album', function(data){
                 $rootScope.$broadcast('onAlbumsReceived', data);
             });
         },
         getArtists : function() {
-            mpd.getList('artist', function(data){
+            currentMPD.getList('artist', function(data){
             $rootScope.$broadcast('onArtistsReceived', data);
             });
         },
         getGenres : function() {
-            mpd.getList('genre', function(data){
+            currentMPD.getList('genre', function(data){
                 $rootScope.$broadcast('onGenresReceived', data);
             });
         },
         refrechSongs : function(search) {
-            mpd.findRequest(search, function(data){
+            currentMPD.findRequest(search, function(data){
                 $rootScope.$broadcast('onResonseFindRequest', data);
             });
         },
         getPlaylists : function() {
-            mpd.listOfPlaylists(function(data){
+            currentMPD.listOfPlaylists(function(data){
                 $rootScope.$broadcast('onPlaylistsReceived', data);
             });
         },
         getPlaylistsSongs : function(name) {
-            mpd.playlistSongs(name, function(data){
+            currentMPD.playlistSongs(name, function(data){
                 $rootScope.$broadcast('onPlaylistSongsReceived', data);
             })
         },
         addPlaylist : function(name) {
-            mpd.newPlaylist(name, function(response){
+            currentMPD.newPlaylist(name, function(response){
                 return response;
             });
         },
         removePlaylist : function(name) {
-            mpd.removePlayList(name, function(response){
+            currentMPD.removePlayList(name, function(response){
                 return response;
             })
         },
         addSongToPlaylist : function(name, song) {
-            mpd.addToPlaylist(name, song, function(response){
+            currentMPD.addToPlaylist(name, song, function(response){
                 return response;
             });
         },
         deleteSongFromPlaylist : function(name, song) {
-            mpd.deleteFromPlaylist(name, song, function(response){
+            currentMPD.deleteFromPlaylist(name, song, function(response){
                 return response;
             });
         },
         loadPlaylist : function(name) {
-            mpd.loadPlaylist(name ,function(response){
+            currentMPD.loadPlaylist(name ,function(response){
                 return response;
             });
         },
         status : function (callback) {
-            mpd.updateStatus(callback);
+            currentMPD.updateStatus(callback);
         },
         seek: function (position, callback) {
-            mpd.seek(position,callback);
+            currentMPD.seek(position,callback);
+        },
+        setPlayer : function (player) {
+            rooms.forEach(function(element) {
+                if(element.$$hashKey == player.$$hashKey){
+                    currentMPD = element;
+                }
+            });
         }
     }
 };

@@ -1,7 +1,17 @@
 /**
  * Created by marco on 2/03/17.
  */
-function main_ctrl($scope, $timeout, MPDService) {
+function main_ctrl($scope, $timeout, $location, MPDService) {
+
+
+    $scope.rooms = MPDService.getRooms();   
+    
+    $scope.rooms.forEach(function(player) {
+        player.counter = (player.status.time) ? player.status.time.elapsed : 0;
+        player.time = (player.status.time) ? player.status.time.length : 0;
+        player.timeout = 0;
+    }, this);
+
 
     //ici on va stocker la dernier musique jouée et la dernier action fait, pour pouvoir controller le pause, stop, et surtout le "next"
     //pour savoir quand redémarrer le timer
@@ -10,6 +20,7 @@ function main_ctrl($scope, $timeout, MPDService) {
     /**
      * Fonction qui s'éxecute quand le controller charge (après le chargement du DOM, voir $timeout)
      */
+    
     $timeout(function () {
         $scope.player = MPDService.getPlayer();
         if($scope.player) {
@@ -22,31 +33,41 @@ function main_ctrl($scope, $timeout, MPDService) {
 
     const stopCounter = function(){
         //divide = pourcentage par rapport à la durée de la musique, pour le width du progress-bar
-        $scope.divide = $scope.counter*100/$scope.time;
-        $timeout.cancel(mytimeout);
+        $scope.player.divide = $scope.player.counter*100/$scope.player.time;
+        $timeout.cancel($scope.player.timeout);
+        //$timeout.cancel(mytimeout);
     };
 
     const onTimeout = function(){
         //divide = pourcentage par rapport à la durée de la musique, pour le width du progress-bar
         //counter = valeur, soit 0 soit le temps qui a passé en jouant la musique (on l'obtient et on le set de $scope.player.status.time.elapsed)
-        if($scope.counter < $scope.time){
-            $scope.counter++;
-            $scope.divide = $scope.counter*100/$scope.time;
-            mytimeout = $timeout(onTimeout,1000);
+        if($scope.player.counter < $scope.player.time){
+            $scope.player.counter++;
+            $scope.player.divide = $scope.player.counter*100/$scope.player.time;
+            $scope.player.timeout = $timeout(onTimeout,1000);
+            //mytimeout = $timeout(onTimeout,1000);
         }
     };
+    
+    //var mytimeout = $timeout(onTimeout,1000);
 
     const restart = function () {
         stopCounter();
         onTimeout();
     };
 
-    var mytimeout = $timeout(onTimeout,1000);
 
-    $scope.seek = function (e) {
+    $scope.seek = function (player, e) {
+        MPDService.setPlayer(player);
+        $scope.rooms.forEach(function(p) {
+            if(player.$$hashkey == p.$$hashkey){
+                $scope.player = p;
+            }
+        }, this);
+        stopCounter();
         var fullProgressBarWidth = $(e.currentTarget).width();
         var requestedPosition = e.offsetX / fullProgressBarWidth;
-        var seekTime = Math.ceil($scope.time*requestedPosition);
+        var seekTime = Math.ceil($scope.player.time*requestedPosition);
         MPDService.seek(seekTime);
     };
 
@@ -61,7 +82,7 @@ function main_ctrl($scope, $timeout, MPDService) {
         if(playerStatus.state == 'stop'){
             actualStatus.state = playerStatus.state;
             actualStatus.actualSongId = playerStatus.song;
-            $scope.counter = 0;
+            $scope.player.counter = 0;
             stopCounter();
         }else{
             //Si lorsqu'on se connecte, le player est en "play" ou "pause" on mettre à jour le titre de la musique dans la vue
@@ -72,8 +93,9 @@ function main_ctrl($scope, $timeout, MPDService) {
                 elapsed = playerStatus.time.elapsed;
             }
             $scope.$apply(function () {
-                $scope.time = currentSong.time;
-                $scope.counter = elapsed;
+                $scope.player.time = currentSong.time;
+                //$scope.time = currentSong.time;
+                $scope.player.counter = elapsed;
                 $scope.player.currentSong = {name : currentSong.artist+ " - "+ currentSong.title
                 }
             });
@@ -115,71 +137,92 @@ function main_ctrl($scope, $timeout, MPDService) {
     });
 
     $scope.$on('onDisconnect', function(event, data){
-        $scope.counter= 0;
+        $scope.player.counter= 0;
         stopCounter();
         $scope.player = null;
     });
 
-    $scope.addSongs = function () {
+    $scope.addSongs = function (player) {
+        MPDService.setPlayer(player);
         MPDService.addSongs();
     };
 
-    $scope.play = function () {
+    $scope.play = function (player) {
+        MPDService.setPlayer(player);
         MPDService.play();
     };
 
-    $scope.pause = function () {
+    $scope.pause = function (player) {
+        MPDService.setPlayer(player);
         MPDService.pause();
     };
 
-    $scope.random = function () {
+    $scope.random = function (player) {
+        MPDService.setPlayer(player);
       MPDService.random();
     };
 
-    $scope.repeat = function () {
+    $scope.repeat = function (player) {
+        MPDService.setPlayer(player);
         MPDService.repeat();
     };
 
-    $scope.next = function () {
+    $scope.next = function (player) {
+        MPDService.setPlayer(player);
         $scope.$broadcast('timer-stop');
         MPDService.next();
     };
-    $scope.prev = function () {
+    $scope.prev = function (player) {
+        MPDService.setPlayer(player);
         MPDService.prev();
     };
-    $scope.stop = function () {
+    $scope.stop = function (player) {
+        MPDService.setPlayer(player);
         MPDService.stop();
     };
-    $scope.clear = function () {
+    $scope.clear = function (player) {
+        MPDService.setPlayer(player);
         MPDService.clear();
         MPDService._updatePlaylist(function () {
             //PLAYER.modules.playlist.loadSongs(mpd.playlist);
         });
 
     };
-    $scope.playAt = function (pos) {
+    $scope.playAt = function (player, pos) {
+        MPDService.setPlayer(player);
         MPDService.playAt(pos);
     };
 
     //$scope add ne sert plus à rien
-    $scope.add = function (name) {
+    $scope.add = function (player, name) {
+        MPDService.setPlayer(player);
         MPDService.add(name);
         MPDService._updatePlaylist(function () {
             //PLAYER.modules.playlist.loadSongs(mpd.playlist);
         });
     };
 
-    $scope.delete = function(position){
+    $scope.delete = function(player, position){
+        MPDService.setPlayer(player);
         MPDService.delete(position);
     }
 
-    $scope.volPlus = function () {
+    $scope.volPlus = function (player) {
+        MPDService.setPlayer(player);
         console.log("plus");
         MPDService.volPlus();
     };
-    $scope.volMinus = function () {
+    $scope.volMinus = function (player) {
+        MPDService.setPlayer(player);
         MPDService.volMinus();
     };
+
+    $scope.toLibrary = function(player) {
+        MPDService.setPlayer(player);
+        console.log(player);
+        $location.path('library');
+    };
+
 }
 
 module.exports = main_ctrl;

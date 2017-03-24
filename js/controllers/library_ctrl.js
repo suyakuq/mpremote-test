@@ -87,6 +87,12 @@ function library_ctrl($scope, MPDService) {
         });
     });
 
+    $scope.$on('onSwitchServer', function(event, data){
+        $scope.$apply(function(){
+            console.log(data);
+        });
+    });
+
     $scope.addToQueue = function(song){
         MPDService.add(song);
     }
