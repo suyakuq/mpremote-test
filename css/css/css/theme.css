@@ -76,7 +76,7 @@ header {
   .player .remote button.btn-selected {
     color: #0e0e0e; }
 
-#settings {
+#settings, #home, #library {
   color: #008e90;
   font-size: 2em; }
 
