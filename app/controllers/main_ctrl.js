@@ -6,14 +6,34 @@ function main_ctrl($scope, $rootScope, $timeout, $location, MPDService) {
     const categories = ['playlist','artist','genre','album', 'allSongs'];
 
     $scope.tabs = [];
+
+    /**
+     * Fonction qui s'éxecute quand le controller charge (après le chargement du DOM, voir $timeout)
+     */
+
+    $timeout(function () {
+        $scope.rooms = MPDService.getRooms();
+        $scope.rooms.forEach(function(player) {
+            console.log(player);
+            $scope.tabs.push({
+                title: player.host,
+                player: player,
+                library: { open: false, genres: [], artists : [], playlists: [], albums: [], allSongs: []}
+            });
+        }, this);
+
+    });
     $scope.openLibrary=function(tabIndex, player){
         var library = $scope.tabs[tabIndex].library;
         categories.forEach(function (e) {
-            MPDService.searchMusicByType(tabIndex, player, e);
+            MPDService.queryLibraryByType(tabIndex, player, e);
         });
-        MPDService.getAllSongs(player);
         library.open = !library.open;
         console.log($scope.tabs[tabIndex].library.open);
+    };
+
+    $scope.searchSongs = function(tabIndex, player, type, criteria){
+        MPDService.searchSongs(tabIndex, player, type, criteria);
     };
 
     $scope.$on('onDataReceived', function (event, data) {
@@ -38,22 +58,17 @@ function main_ctrl($scope, $rootScope, $timeout, $location, MPDService) {
         }
         $scope.$apply(updateList);
     });
-    /**
-     * Fonction qui s'éxecute quand le controller charge (après le chargement du DOM, voir $timeout)
-     */
 
-    $timeout(function () {
-        $scope.rooms = MPDService.getRooms();
-        $scope.rooms.forEach(function(player) {
-            console.log(player);
-            $scope.tabs.push({
-                title: player.host,
-                player: player,
-                library: { open: false, genres: [], artists : [], playlists: [], albums: [], allSongs: []}
+    $scope.$on('onResponseFindRequest', function(event, data){
+        var tab = $scope.tabs[data.tabIndex];
+        tab.library.allSongs = [];
+        if(tab){
+            $scope.$apply(function(){
+                tab.library.allSongs = data.items;
             });
-        }, this);
+        }
+    });
 
-        });
 
     $scope.seek = function (player, e) {
         //stopCounter();

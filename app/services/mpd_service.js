@@ -172,12 +172,7 @@ module.exports = function($rootScope, electron, $timeout) {
                 player.updateStatus();
             }
         },
-        getAllSongs : function(player) {
-            player.getSongs(function(data){
-                $rootScope.$broadcast('onSongsReceived',data);
-            });
-        },
-        searchMusicByType: function (tabIndex, player, type) {
+        queryLibraryByType: function (tabIndex, player, type) {
             if(type =='allSongs'){
                 player.getSongs(function (data) {
                     $rootScope.$broadcast('onDataReceived', {type: type, items: data, tabIndex: tabIndex});
@@ -194,20 +189,17 @@ module.exports = function($rootScope, electron, $timeout) {
                 });
             }
         },
-        refrechSongs : function(player, search) {
-            player.findRequest(search, function(data){
-                $rootScope.$broadcast('onResonseFindRequest', data);
-            });
-        },
-        getPlaylists : function(player) {
-            player.listOfPlaylists(function(data){
-                $rootScope.$broadcast('onPlaylistsReceived', data);
-            });
-        },
-        getPlaylistsSongs : function(player, name) {
-            player.playlistSongs(name, function(data){
-                $rootScope.$broadcast('onPlaylistSongsReceived', data);
-            })
+        searchSongs : function(tabIndex, player, type, search) {
+            if(type == 'playlist'){
+                player.playlistSongs(search, function(data){
+                    $rootScope.$broadcast('onResponseFindRequest', {items: data, tabIndex: tabIndex});
+                })
+            }else{
+                player.findRequest(type, search, function(data){
+                    $rootScope.$broadcast('onResponseFindRequest', {items: data, tabIndex: tabIndex});
+                });
+            }
+
         },
         addPlaylist : function(player, name) {
             player.newPlaylist(name, function(response){
