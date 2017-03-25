@@ -42,73 +42,83 @@
 				</div>
 		</section>
 
-		<section class="row content">
-				<div class="row text-uppercase text-center">
-					<h1>Your music</h1>
+		<section ng-show="tab.library.open" class="row content">
+			<div class="row text-uppercase text-center">
+				<h1>Your music</h1>
+			</div>
+			<div>
+				<div class="col-sm-3 waiting-list">
+					<h3>Waiting list</h3>
+					<div>
+						<div class="row" ng-repeat="song in tab.player.playlist" class="item" ng-click="playAt(tab.player,$index)">
+							<div class="col-sm-8"><a href="">{{song.file}}</a></div>
+							<div class="col-sm-4 text-right">
+								<!--<button id="next"><i class="fa fa-plus-square-o" aria-hidden="true"></i></button>-->
+								<button ng-click="delete(tab.player, $index);$event.stopPropagation();"><i class="fa fa-trash" aria-hidden="true"></i></button>
+							</div>
+						</div>
+					</div>
 				</div>
-				<div>
-					<div class="col-sm-3 waiting-list">
-						<h3>Waiting list</h3>
+				<div class="col-sm-6">
+					<div class="col-sm-6 classic-list">
+						<h3>Genres</h3>
 						<div>
-							<div class="row" ng-repeat="song in tab.player.playlist" class="item" ng-click="playAt(tab.player,$index)">
-								<div class="col-sm-8"><a href="">{{song.file}}</a></div>
+							<div ng-repeat="genre in tab.library.genres" class="item" ng-click="refrechList(genre)" class="row">
+								<div class="col-sm-12"><a href="">{{genre}}</a></div>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6 classic-list">
+						<h3>Albums</h3>
+						<div>
+							<div ng-repeat="album in tab.library.albums" ng-click="refrechList(album)" class="row">
+								<div  class="col-sm-12"><a href="">{{album}}</a></div>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6 classic-list">
+						<h3>Playlists</h3>
+						<div>
+							<div ng-repeat="playlist in tab.library.playlists" class="item" ng-click="getPlaylistSongs(pl)" class="row">
+								<div class="col-sm-8"><a href="">{{playlist}}</a></div>
 								<div class="col-sm-4 text-right">
-									<!--<button id="next"><i class="fa fa-plus-square-o" aria-hidden="true"></i></button>-->
-									<button ng-click="delete(tab.player, $index);$event.stopPropagation();"><i class="fa fa-trash" aria-hidden="true"></i></button>
+									<button id="next"><i class="fa fa-plus" aria-hidden="true" ng-click="loadPlaylist(pl); $event.stopPropagation();"></i></button>
 								</div>
 							</div>
+						</div>
+						<div class="text-center">
+                            <form ng-submit="addPlaylist(playlist.name)">
+                                <input type="text" ng-model="playlist.name" name="text" class="form-control"/>
+                                <input type="submit" id="submit" value="Add" class="btn-add"/>
+                            </form>
 						</div>
 					</div>
-					<div class="col-sm-6">
-						<div class="col-sm-6 classic-list">
-							<h3>Genres</h3>
-							<div>
-								<div ng-repeat="genre in genres" class="item" ng-click="refrechList(genre)" class="row">
-									<div class="col-sm-12"><a href="">{{genre}}</a></div>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-6 classic-list">
-							<h3>Albums</h3>
-							<div>
-								<div ng-repeat="album in albums" class="item" ng-click="refrechList(album)" class="row">
-									<div class="col-sm-12"><a href="">{{album}}</a></div>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-6 classic-list">
-							<h3>Playlists</h3>
-							<div>
-								<div ng-repeat="pl in playlists" class="item" ng-click="getPlaylistSongs(pl)" class="row">
-									<div class="col-sm-8"><a href="">{{pl}}</a></div>
-									<div class="col-sm-4 text-right">
-										<button id="next"><i class="fa fa-plus" aria-hidden="true" ng-click="loadPlaylist(pl); $event.stopPropagation();"></i></button>
-									</div>
-								</div>
-							</div>
-							<div class="text-center">
-								<form ng-submit="addPlaylist(playlist.name)">
-									<input type="text" ng-model="playlist.name" name="text" class="form-control"/>
-									<input type="submit" id="submit" value="Add" class="btn-add"/>
-								</form>
-							</div>
-						</div>
-						<div class="col-sm-6 classic-list">
-							<h3>Composers</h3>
-							<div>
-								<div ng-repeat="artist in artists" class="item" ng-click="refrechList(artist)" class="row">
-									<div class="col-sm-12"><a href="">{{artist}}</a></div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-3 search-list classic-list">
-						<div class="row text-center">
-							<input class="col-sm-10 col-sm-offset-1" type="text" placeholder="Search (genres, albums, musics ...)" />
+					<div class="col-sm-6 classic-list">
+						<h3>Composers</h3>
+						<div>
+                            <div ng-repeat="artist in tab.library.artists" class="item" ng-click="refrechList(artist)" class="row">
+                                <div class="col-sm-12"><a href="">{{artist}}</a></div>
+                            </div>
 						</div>
 					</div>
 				</div>
+				<div class="col-sm-3 search-list classic-list">
+					<div class="row text-center">
+						<input class="col-sm-10 col-sm-offset-1" type="text" placeholder="Search (genres, albums, musics ...)" />
+					</div>
+					<div>
+						<div class="row">
+							<div ng-repeat="song in tab.library.allSongs" class="col-sm-12"><a href="">{{song.title}}</a></div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</section>
+		<div class="footer navbar-fixed-bottom">
+			<div class="row text-uppercase text-center">
+				<button class="btn btn-default" ng-click="openLibrary($index, tab.player)"><h1>{{tab.library.open ? 'Close': 'Open' }} Library</h1></button>
+			</div>
+		</div>
 	</uib-tab>
 </uib-tabset>
 

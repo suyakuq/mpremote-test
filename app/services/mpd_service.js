@@ -3,11 +3,8 @@
  */
 module.exports = function($rootScope, electron, $timeout) {
 
-    var showAlert = function (message) {
-        electron.dialog.showMessageBox({
-            title: 'Message',
-            message: message
-        });
+    const filterEmpty = function (e) {
+        return e && e!='';
     };
 
     const notifyMsg = function (type, data) {
@@ -88,10 +85,6 @@ module.exports = function($rootScope, electron, $timeout) {
                 rooms.push(this);
                 notifyMsg('connect', {serverName: server.name, host: this.host});
                 checkStatus(this);
-                /*if(status.state =='play'){
-                    this.currentSong=  this.playlist[this.status.song];
-                    notifyMsg('play', {music: this.currentSong.artist+" - "+this.currentSong.title});
-                }*/
                 callback();
                 mpd = undefined;
             });
@@ -184,20 +177,22 @@ module.exports = function($rootScope, electron, $timeout) {
                 $rootScope.$broadcast('onSongsReceived',data);
             });
         },
-        getAlbums : function(player) {
-            player.getList('album', function(data){
-                $rootScope.$broadcast('onAlbumsReceived', data);
-            });
-        },
-        getArtists : function(player) {
-            player.getList('artist', function(data){
-            $rootScope.$broadcast('onArtistsReceived', data);
-            });
-        },
-        getGenres : function(player) {
-            player.getList('genre', function(data){
-                $rootScope.$broadcast('onGenresReceived', data);
-            });
+        searchMusicByType: function (tabIndex, player, type) {
+            if(type =='allSongs'){
+                player.getSongs(function (data) {
+                    $rootScope.$broadcast('onDataReceived', {type: type, items: data, tabIndex: tabIndex});
+                });
+            }else if(type =='playlist'){
+                player.listOfPlaylists(function (data) {
+                    data = data.filter(filterEmpty);
+                    $rootScope.$broadcast('onDataReceived', {type: type, items: data, tabIndex: tabIndex});
+                });
+            }else{
+                player.getList(type, function (data) {
+                    data = data.filter(filterEmpty);
+                    $rootScope.$broadcast('onDataReceived', {type: type, items: data, tabIndex: tabIndex});
+                });
+            }
         },
         refrechSongs : function(player, search) {
             player.findRequest(search, function(data){

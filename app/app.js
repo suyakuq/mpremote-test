@@ -10,4 +10,3 @@ app.config(['$stateProvider', '$urlRouterProvider', require('./config').router])
 app.service('MPDService', ['$rootScope', 'electron', '$timeout', require('./services/mpd_service')]);
 app.controller('MainCtrl', ['$scope', '$rootScope', '$timeout', '$location', 'MPDService', require('./controllers/main_ctrl')]);
 app.controller('SettingsCtrl', ['$scope', '$rootScope','$location', 'MPDService', require('./controllers/settings_ctrl')]);
-app.controller('LibraryCtrl', ['$scope', '$rootScope','MPDService', require('./controllers/library_ctrl')]);

@@ -1,6 +1,6 @@
 function library_ctrl($scope, $rootScope, MPDService) {
-    $rootScope.showHome = true;
-    $rootScope.showLibrary = false;
+    //$rootScope.showHome = true;
+    //$rootScope.showLibrary = false;
     console.log('library');
     $scope.selectedSong;
     $scope.currentPlaylist;

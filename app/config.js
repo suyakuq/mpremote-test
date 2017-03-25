@@ -28,14 +28,6 @@ var config = {
                     templateUrl: 'app/templates/settings.html', controller: 'SettingsCtrl'
                 }
             }
-        }).state('library', {views: {
-            nav: {
-                templateUrl: 'app/templates/nav.html'
-            },
-            content: {
-                templateUrl: 'app/templates/library.html', controller: 'LibraryCtrl'
-            }
-         }
         });
 
         // if none of the above states are matched, use this as the fallback

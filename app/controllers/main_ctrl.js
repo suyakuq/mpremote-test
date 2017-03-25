@@ -3,8 +3,41 @@
  */
 function main_ctrl($scope, $rootScope, $timeout, $location, MPDService) {
     $rootScope.showHome = false;
-    $scope.tabs = [];
+    const categories = ['playlist','artist','genre','album', 'allSongs'];
 
+    $scope.tabs = [];
+    $scope.openLibrary=function(tabIndex, player){
+        var library = $scope.tabs[tabIndex].library;
+        categories.forEach(function (e) {
+            MPDService.searchMusicByType(tabIndex, player, e);
+        });
+        MPDService.getAllSongs(player);
+        library.open = !library.open;
+        console.log($scope.tabs[tabIndex].library.open);
+    };
+
+    $scope.$on('onDataReceived', function (event, data) {
+        var updateList;
+        var tab = $scope.tabs[data.tabIndex];
+        switch(data.type){
+            case 'artist': updateList = function () {
+                tab.library.artists = data.items;
+            };break;
+            case 'album': updateList= function () {
+                tab.library.albums = data.items;
+            };break;
+            case 'genre': updateList = function () {
+                tab.library.genres = data.items;
+            };break;
+            case 'playlist': updateList = function () {
+                tab.library.playlists = data.items;
+            };break;
+            default: updateList = function () {
+                tab.library.allSongs = data.items;
+            }
+        }
+        $scope.$apply(updateList);
+    });
     /**
      * Fonction qui s'éxecute quand le controller charge (après le chargement du DOM, voir $timeout)
      */
@@ -15,7 +48,8 @@ function main_ctrl($scope, $rootScope, $timeout, $location, MPDService) {
             console.log(player);
             $scope.tabs.push({
                 title: player.host,
-                player: player
+                player: player,
+                library: { open: false, genres: [], artists : [], playlists: [], albums: [], allSongs: []}
             });
         }, this);
 
