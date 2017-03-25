@@ -69,6 +69,10 @@ h3 {
 
 header {
   background-color: #0e0e0e; }
+  header .img_logo {
+    height: 60px; }
+  header #settings {
+    margin-top: 10px; }
 
 .player .remote button {
   color: #008e90;

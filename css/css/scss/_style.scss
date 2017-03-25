@@ -61,6 +61,12 @@ h3{
 
 header{
     background-color: $colorBackground1;
+	.img_logo{
+		height: 60px;
+	}
+	#settings{
+		margin-top: 10px;
+	}
 }
 
 .player{
