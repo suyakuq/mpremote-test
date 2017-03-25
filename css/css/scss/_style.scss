@@ -80,6 +80,11 @@ header{
             }
         }
     }
+	@media screen and (min-width: 70em){
+		.music-player{
+			margin-top: -20px;
+		}
+	}
 }
 
 #settings{
