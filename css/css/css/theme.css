@@ -83,7 +83,7 @@ header {
   .player .music-player {
     margin-top: -20px; } }
 
-#settings {
+#settings, #home, #library {
   color: #008e90;
   font-size: 2em; }
 

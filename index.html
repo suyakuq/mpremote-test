@@ -16,50 +16,20 @@
   <body ng-app="mpremote" class="col-md-12">
 
       <!-- header -->
-      <header class="row">
-          <div class="col-md-4 col-md-offset-4 text-center">
-              <a ui-sref="main"><img class="img_logo" src="images/logo.png" /></a>
+      <div ui-view name="nav"></div>
+      <div>
+          <div class="container">
+              <div ui-view name="content"></div>
           </div>
-          <div class="col-md-4 text-right">
-              <button ui-sref="settings" id="settings"><i class="fa fa-cog" aria-hidden="true"></i></button>
-          </div>
-      </header>
-  <div>
-    <div  class="container">
-      <ui-view></ui-view>
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
+      </div>
 
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-    </div>
-  </div>
+      <!--<div>
+        <div  class="container">
+          <ui-view></ui-view>
+        </div>
+      </div>-->
       <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
   <script type="text/javascript" src="js/bundle.js"></script>
-  <script type="text/javascript" src="js/electangular.js"></script>
+  <script type="text/javascript" src="app/electangular.js"></script>
   </body>
 </html>

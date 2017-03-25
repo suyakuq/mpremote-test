@@ -1,10 +1,21 @@
 /**
  * Created by marco on 2/03/17.
  */
-function settings_ctrl($scope, $location, MPDService) {
-
+function settings_ctrl($scope, $rootScope, $location, MPDService) {
+    $rootScope.showHome = true;
     //$scope.player = MPDService.getPlayer();
+    $scope.tabs = [];
     $scope.rooms = MPDService.getRooms();
+    console.log($scope.rooms);
+    $scope.rooms.forEach(function(player,i) {
+        $scope.tabs.push({
+            id: i,
+           title: player.host,
+            player: player,
+            static: false
+        });
+    });
+    $scope.tabs.push({title: 'New (+)', static : true});
     $scope.servers = [];
 
     const defaultIp = '192.168.43.98';
@@ -21,13 +32,10 @@ function settings_ctrl($scope, $location, MPDService) {
     };
 
     $scope.disconnect = function (player) {
-      /*MPDService.disconnect(function () {
-          $scope.player = null;
-          $scope.isConnected = false;
-      });*/
-      MPDService.disconnect(player, function(response){
-          console.log(response);
-          $scope.rooms.splice($scope.rooms.indexOf(player),1);
+      MPDService.disconnect(player, function(indexToDelete){
+          console.log(indexToDelete);
+              $scope.rooms = MPDService.getRooms();
+              $scope.tabs.splice(indexToDelete, 1);
       })
     };
 }
