@@ -8,6 +8,9 @@ body{
     button{
         color: $colorSecondary1;
     }
+	.classic-list, .waiting-list, .search-list{
+		overflow-y: auto;
+	}
     .classic-list, .waiting-list{
         border: 3px solid $colorBackground2;
     }
