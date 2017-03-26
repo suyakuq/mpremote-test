@@ -87,8 +87,8 @@
 							</div>
 						</div>
 						<div class="text-center">
-                            <form ng-submit="addPlaylist(playlist.name)">
-                                <input type="text" ng-model="playlist.name" name="text" class="form-control"/>
+                            <form ng-submit="addPlaylist($index, tab.player, newPlaylist.name)">
+                                <input type="text" ng-model="newPlaylist.name" name="text" class="form-control"/>
                                 <input type="submit" id="submit" value="Add" class="btn-add"/>
                             </form>
 						</div>

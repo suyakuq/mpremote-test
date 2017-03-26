@@ -36,6 +36,14 @@ function main_ctrl($scope, $rootScope, $timeout, $location, MPDService) {
         MPDService.searchSongs(tabIndex, player, type, criteria);
     };
 
+    $scope.addPlaylist = function(tabIndex, player, name){
+        MPDService.addPlaylist(tabIndex, player, name, function (response) {
+            if(response){
+                $scope.tabs[tabIndex].library.playlists.push(response);
+            }
+        });
+    };
+
     $scope.$on('onDataReceived', function (event, data) {
         var updateList;
         var tab = $scope.tabs[data.tabIndex];

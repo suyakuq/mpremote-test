@@ -201,9 +201,9 @@ module.exports = function($rootScope, electron, $timeout) {
             }
 
         },
-        addPlaylist : function(player, name) {
+        addPlaylist : function(tabIndex, player, name, callback) {
             player.newPlaylist(name, function(response){
-                return response;
+                callback(response);
             });
         },
         removePlaylist : function(player, name) {

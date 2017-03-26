@@ -14,6 +14,14 @@ function createWindow(){
 
     mainWindow = new BrowserWindow({width: 1600, height: 1200});
     mainWindow.setMenu(null);//hide menu
+    //prevent dragging items in app
+    mainWindow.webContents.on('will-navigate', function (e) {
+        e.preventDefault()
+    });
+    //prevents opening a new window(eg. when middle-clicking)
+    mainWindow.webContents.on('new-window', function (e) {
+        e.preventDefault()
+    });
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'index.html'),
         protocol: 'file:',
