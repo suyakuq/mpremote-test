@@ -8,7 +8,7 @@ button {
   button:hover {
     opacity: 0.7; }
 
-.btn-add {
+.btn-add, .btn-manage-library {
   background-color: #99003a;
   color: #f8f8f8 !important;
   font-family: "Pathway Gothic One";
@@ -16,6 +16,16 @@ button {
   padding: 5px 15px;
   text-transform: uppercase;
   transition: 0.5s; }
+
+.btn-manage-library {
+  background-color: #fff;
+  border: 1px solid #008e90;
+  color: #008e90 !important;
+  margin: 20px; }
+  .btn-manage-library:hover {
+    background-color: #008e90;
+    color: #f8f8f8 !important;
+    opacity: 1 !important; }
 
 body {
   font-family: Calibri; }
