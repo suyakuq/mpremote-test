@@ -18,8 +18,6 @@ module.exports = function($rootScope, electron, $timeout) {
     const stopCounter = function(player){
         //divide = pourcentage par rapport à la durée de la musique, pour le width du progress-bar
         player.divide = 0;
-        console.log('coming');
-        console.log(player.promiseTimeout);
         $timeout.cancel(player.promiseTimeout);
         //$timeout.cancel(mytimeout);
     };
@@ -40,12 +38,13 @@ module.exports = function($rootScope, electron, $timeout) {
         if(player.status.state =='play'){
             player.currentSong = player.playlist[player.status.song];
             notifyMsg('play', {music: player.currentSong.artist+" - "+player.currentSong.title, host: player.host});
-            if(player.previousStatus.songId != player.status.song || player.previousStatus.state == 'stop') {
+            if((player.previousStatus.songId != -1 && player.previousStatus.songId != player.status.song) || player.previousStatus.state == 'stop') {
                 stopCounter(player);
             }
+            player.previousStatus.songId = player.status.song;
             onTimeout(player);
         }else if(player.status.state == 'pause'){
-            stopCounter(this);
+            stopCounter(player);
         }else if(player.status.state == 'stop'){
             console.log('stop');
             stopCounter(player);
@@ -64,7 +63,6 @@ module.exports = function($rootScope, electron, $timeout) {
         connect : function (host, port, callback) {
             var mpd = new MPD({host: host, port : port});
             mpd.on('update', function (updated) {
-                console.log(this);
                 if(updated == 'player'){
                     this.timer.time = (this.status.time) ? this.status.time.length : 0;
                     this.timer.counter = (this.status.time) ? this.status.time.elapsed : 0;
