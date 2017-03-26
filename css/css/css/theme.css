@@ -45,6 +45,13 @@ body {
       background-color: #008e90; }
       .content .classic-list .selected a {
         color: #f8f8f8; }
+  .content .new-playlist {
+    padding: 10px 0; }
+    .content .new-playlist .new-name {
+      border-bottom: 1px solid #490054;
+      color: #99003a;
+      text-align: center;
+      margin-bottom: 5px; }
   .content .search-list {
     height: 400px;
     padding-top: 20px; }
