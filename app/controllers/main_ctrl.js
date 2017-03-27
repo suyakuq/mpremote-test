@@ -14,7 +14,6 @@ function main_ctrl($scope, $rootScope, $timeout, $location, MPDService) {
     $timeout(function () {
         $scope.rooms = MPDService.getRooms();
         $scope.rooms.forEach(function(player) {
-            console.log(player);
             $scope.tabs.push({
                 title: player.host,
                 player: player,
