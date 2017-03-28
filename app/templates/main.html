@@ -46,7 +46,7 @@
 				<div class="col-sm-3 waiting-list">
 					<h3>Waiting list</h3>
 					<div>
-						<div class="row" ng-repeat="song in tab.player.playlist" class="item" ng-click="playAt(tab.player,$index)">
+						<div class="row" ng-repeat="song in tab.player.playlist" class="item" ng-class="{selected: $index == tab.player.status.song}" ng-click="playAt(tab.player,$index)">
 							<div class="col-sm-8"><a href="">{{song.file}}</a></div>
 							<div class="col-sm-4 text-right">
 								<!--<button id="next"><i class="fa fa-plus-square-o" aria-hidden="true"></i></button>-->
