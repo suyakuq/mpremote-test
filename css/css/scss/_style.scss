@@ -82,6 +82,12 @@ header{
 }
 
 .player{
+	padding-bottom: 20px;
+	@media screen and (min-width: 70em){
+		.player-bar{
+			margin-top: -17px;
+		}
+	}
     .remote{
         button{
             color: $colorPrincipal1;
