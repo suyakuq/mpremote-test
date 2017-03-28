@@ -27,27 +27,29 @@ module.exports = function($rootScope, electron, $timeout) {
         //counter = valeur, soit 0 soit le temps qui a passé en jouant la musique (on l'obtient et on le set de $scope.player.status.time.elapsed)
 
         if(player.timer.counter < player.timer.time){
-            player.timer.counter++;
             player.promiseTimeout  = $timeout(function () {
                 onTimeout(player);
             },1000);
+            player.timer.counter++;
         }
     };
 
     const checkStatus = function (player) {
         if(player.status.state =='play'){
             player.currentSong = player.playlist[player.status.song];
-            notifyMsg('play', {music: player.currentSong.artist+" - "+player.currentSong.title, host: player.host});
-            if((player.previousStatus.songId != -1 && player.previousStatus.songId != player.status.song) || player.previousStatus.state == 'stop') {
+            if((player.previousStatus.songId != -1 && player.previousStatus.songId != player.status.song) || player.previousStatus.state != 'pause') {
+                console.log('stopping counter');
                 stopCounter(player);
             }
+            if(player.previousStatus.state == 'stop' || player.previousStatus.songId != player.status.song){
+                notifyMsg('play', {music: player.currentSong.artist+" - "+player.currentSong.title, host: player.host});
+            }
             player.previousStatus.songId = player.status.song;
+            player.previousStatus.state = player.status.state;
             onTimeout(player);
-        }else if(player.status.state == 'pause'){
+        }else{
             stopCounter(player);
-        }else if(player.status.state == 'stop'){
-            console.log('stop');
-            stopCounter(player);
+            player.previousStatus.state = player.status.state;
         }
     };
 

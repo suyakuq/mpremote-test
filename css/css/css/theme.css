@@ -130,7 +130,8 @@ header {
 
 .player-bar {
   height: 5px;
-  cursor: pointer; }
+  cursor: pointer;
+  padding: 0; }
 
 .progress-bar {
   background: #99003a; }

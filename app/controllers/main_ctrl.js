@@ -77,11 +77,12 @@ function main_ctrl($scope, $rootScope, $timeout, $location, MPDService) {
     });
 
     $scope.seek = function (player, e) {
-        //stopCounter();
         var fullProgressBarWidth = $(e.currentTarget).width();
         var requestedPosition = e.offsetX / fullProgressBarWidth;
         var seekTime = Math.ceil(player.timer.time*requestedPosition);
-        MPDService.seek(player,seekTime);
+        MPDService.seek(player,seekTime, function () {
+            
+        });
     };
 
     $scope.addToQueue = function (tabIndex, player, song, willPlay) {
