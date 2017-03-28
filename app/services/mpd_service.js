@@ -146,10 +146,8 @@ module.exports = function($rootScope, electron, $timeout) {
 
             });
         },
-        add: function (player, element) {
-            player.add(element, function () {
-               console.log(player.playlist);
-            });
+        add: function (player, element, callback) {
+            player.add(element, callback);
         },
         delete : function (player, element) {
             player.delete(element, function() {
