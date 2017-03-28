@@ -1,4 +1,4 @@
-<uib-tabset active="active">
+			  <uib-tabset active="active">
 	<uib-tab index="$index" ng-repeat="tab in tabs" heading="{{tab.title}}" disable="tab.disabled">
 		<section class="row player">
 				<div class="row info text-center">
@@ -7,36 +7,33 @@
 						<span>{{tab.player.currentSong.artist}} - {{tab.player.currentSong.title}}</span>
 					</div>
 					<div ng-if="tab.player && tab.player.currentSong" class="row">
-						<div class="row">
-							<div class="col-sm-6 col-sm-offset-2">
-								<img src="images/disc_default.png" alt="Image"/>
-							</div>
+						<div class="row text-center">
+								<img src="images/disc_default.png" class="img-disc" alt="Image"/>
 						</div>
-						<div class="row">
-							<div class="progress player-bar" ng-click="seek(tab.player,$event)">
-								<div class="progress-bar notransition" role="progressbar"
-									 aria-valuenow="{{tab.player.timer.divide()}}" aria-valuemin="0" aria-valuemax="{{tab.player.timer.time}}" style="min-width: 0em" ng-style="{width:tab.player.timer.divide()+'%'}">
-									{{tab.player.timer.counter}}
-								</div>
-							</div>
-						</div>
-
 					</div>
 				</div>
-				<div class="row remote">
-					<div class="col-sm-4 col-sm-offset-1">
+				<div class="row remote text-center">
+					<div class="col-sm-3 col-sm-offset-1">
 						<button id="prev" ng-click="prev(tab.player)"><i class="fa fa-step-backward" aria-hidden="true"></i></button>
 						<button ng-if="tab.player.status.state == 'play'" id="pause" ng-click="pause(tab.player)"><i class="fa fa-pause" aria-hidden="true"></i></button>
 						<button ng-if="tab.player.status.state != 'play'" id="play" ng-click="play(tab.player)"><i class="fa fa-play" aria-hidden="true"></i></button>
 						<button id="stop" ng-click="stop(tab.player)"><i class="fa fa-stop" aria-hidden="true"></i></button>
 						<button id="next" ng-click="next(tab.player)"><i class="fa fa-step-forward" aria-hidden="true"></i></button>
 					</div>
-					<div class="col-sm-4 col-sm-offset-3">
+					<div class="col-sm-3 col-sm-offset-4">
 						<span id="currentVol"></span>
 						<button id="volMinus" ng-click="volMinus(tab.player)"><i class="fa fa-volume-down" aria-hidden="true"></i></button>
 						<button  id="volPlus" ng-click="volPlus(tab.player)"><i class="fa fa-volume-up" aria-hidden="true"></i></button>
 						<button ng-class="{'btn-selected': tab.player.status.repeat}" id="repeat"  ng-click="repeat(tab.player)"><i class="fa fa-repeat" aria-hidden="true"></i></button>
 						<button ng-class="{'btn-selected': tab.player.status.random}" id="random" ng-click="random(tab.player)"><i class="fa fa-random" aria-hidden="true"></i></button>
+					</div>
+				</div>
+				<div class="row player-bar">
+					<div class="col-sm-offset-4 col-sm-4 progress player-bar" ng-click="seek(tab.player,$event)">
+						<div class="progress-bar notransition" role="progressbar"
+							 aria-valuenow="{{tab.player.timer.divide()}}" aria-valuemin="0" aria-valuemax="{{tab.player.timer.time}}" style="min-width: 0em" ng-style="{width:tab.player.timer.divide()+'%'}">
+							{{tab.player.timer.counter}}
+						</div>
 					</div>
 				</div>
 		</section>
@@ -122,7 +119,7 @@
 				</div>
 			</div>
 		</section>
-		<section class="content">
+		<section>
 			<div class="row text-uppercase text-center">
 				<button class="btn-manage-library" ng-click="openLibrary($index, tab.player)">{{tab.library.open ? 'Close': 'Open' }} Library</button>
 			</div>

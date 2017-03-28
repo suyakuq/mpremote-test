@@ -31,7 +31,8 @@ body {
   font-family: Calibri; }
 
 .content {
-  background-color: #f8f8f8; }
+  background-color: #f8f8f8;
+  padding-bottom: 15px; }
   .content button {
     color: #99003a; }
   .content .classic-list, .content .waiting-list, .content .search-list {
@@ -95,6 +96,8 @@ header {
 
 .player {
   padding-bottom: 20px; }
+  .player .img-disc {
+    width: 400px; }
   @media screen and (min-width: 70em) {
     .player .player-bar {
       margin-top: -17px; } }

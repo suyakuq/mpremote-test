@@ -5,6 +5,7 @@ body{
 
 .content{
     background-color: $colorBackground2;
+	padding-bottom: 15px;
     button{
         color: $colorSecondary1;
     }
@@ -82,6 +83,9 @@ header{
 }
 
 .player{
+	.img-disc{
+		width: 400px;
+	}
 	padding-bottom: 20px;
 	@media screen and (min-width: 70em){
 		.player-bar{
