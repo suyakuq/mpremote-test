@@ -113,9 +113,6 @@ header {
   .item .fa-trash {
     color: #99003a; }
 
-a h2 {
-  color: #99003a; }
-
 .notransition {
   -webkit-transition: none !important;
   -moz-transition: none !important;
