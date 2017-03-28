@@ -50,7 +50,8 @@
 							<div class="col-sm-8"><a href="">{{song.file}}</a></div>
 							<div class="col-sm-4 text-right">
 								<!--<button id="next"><i class="fa fa-plus-square-o" aria-hidden="true"></i></button>-->
-								<button ng-click="delete(tab.player, $index);$event.stopPropagation();"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                <i ng-if="$index==tab.player.status.song" class="fa fa-play-circle-o" aria-hidden="true"></i>
+                                <button ng-click="delete(tab.player, $index);$event.stopPropagation();"><i class="fa fa-trash" aria-hidden="true"></i></button>
 							</div>
 						</div>
 					</div>
