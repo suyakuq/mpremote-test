@@ -184,9 +184,9 @@ function main_ctrl($scope, $rootScope, $timeout, $location, MPDService) {
     $scope.loadPlaylist = function(tabIndex, player, playlist) {
         MPDService.clear(player);
         MPDService.loadPlaylist(player, playlist);
-        $scope.$apply(function () {
-            $scope.tabs[tabIndex].player = MPDService.getRooms()[tabIndex];
-        });
+        $scope.tabs[tabIndex].player = MPDService.getRooms()[tabIndex];
+        /*$scope.$apply(function () {
+        });*/
     }
 
 }
