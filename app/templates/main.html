@@ -4,7 +4,7 @@
 				<div class="row info text-center">
 					<div class="row">
 						<!-- <img class="col-sm-4 col-sm-offset-4" src="{{image}}" alt="{{image}}" /> -->
-						<span>{{tab.player.currentSong.artist}} - {{tab.player.currentSong.title}}</span>
+						<h3>{{tab.player.currentSong.artist}} - {{tab.player.currentSong.title}}</h3>
 					</div>
 					<div ng-if="tab.player && tab.player.currentSong" class="row">
 						<div class="row text-center">
@@ -46,12 +46,11 @@
 				<div class="col-sm-3 waiting-list">
 					<h3>Waiting list</h3>
 					<div>
-						<div class="row" ng-repeat="song in tab.player.playlist" class="item" ng-class="{selected: $index == tab.player.status.song}" ng-click="playAt(tab.player,$index)">
+						<div class="row" ng-repeat="song in tab.player.playlist" class="item" ng-class="{selected: $index == tab.player.status.song && tab.player.status.state !='stop'}" ng-click="playAt(tab.player,$index)">
 							<div class="col-sm-8"><a href="">{{song.file}}</a></div>
 							<div class="col-sm-4 text-right">
-								<!--<button id="next"><i class="fa fa-plus-square-o" aria-hidden="true"></i></button>-->
-                                <i ng-if="$index==tab.player.status.song" class="fa fa-play-circle-o" aria-hidden="true"></i>
-                                <button ng-click="delete(tab.player, $index);$event.stopPropagation();"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                <i ng-if="$index==tab.player.status.song && tab.player.status.state !='stop'" class="fa fa-play-circle-o" aria-hidden="true"></i>
+                                <button ng-if="$index!=tab.player.status.song || tab.player.status.state =='stop'" ng-click="delete(tab.player, $index);$event.stopPropagation();"><i class="fa fa-trash" aria-hidden="true"></i></button>
 							</div>
 						</div>
 					</div>
@@ -79,7 +78,7 @@
 							<div ng-repeat="playlist in tab.library.playlists" class="item" ng-click="searchSongs($parent.$index, $parent.tab.player, 'playlist', playlist)" class="row">
 								<div class="col-sm-8"><a href="">{{playlist}}</a></div>
 								<div class="col-sm-4 text-right">
-									<button><i class="fa fa-plus" aria-hidden="true" ng-click="loadPlaylist($parent.tab.player, playlist); $event.stopPropagation();"></i></button>
+									<button><i class="fa fa-plus" aria-hidden="true" ng-click="loadPlaylist($parent.$index, $parent.tab.player, playlist); $event.stopPropagation();"></i></button>
 								</div>
 							</div>
 						</div>

@@ -16,20 +16,12 @@
   <body ng-app="mpremote" class="col-md-12">
 
       <!-- header -->
-      <div ui-view name="nav">
-	  </div>
-      <div>
-          <div class="container">
-              <div ui-view name="content">
-			  </div>
+      <ui-view name="nav">
+      </ui-view>
+      <div class="container">
+          <div ui-view name="content">
           </div>
       </div>
-
-      <!--<div>
-        <div  class="container">
-          <ui-view></ui-view>
-        </div>
-      </div>-->
       <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
   <script type="text/javascript" src="js/bundle.js"></script>
   <script type="text/javascript" src="app/electangular.js"></script>

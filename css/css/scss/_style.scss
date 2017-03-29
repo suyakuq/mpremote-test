@@ -1,10 +1,11 @@
 
 body{
     font-family: $fontContent;
+    background-color: $colorBackground2;
 }
 
 .content{
-    background-color: $colorBackground2;
+    /*background-color: $colorBackground2;*/
 	padding-bottom: 15px;
     button{
         color: $colorSecondary1;
@@ -83,6 +84,7 @@ header{
 }
 
 .player{
+	background-color: $colorWhite!important;
 	.img-disc{
 		width: 400px;
 	}

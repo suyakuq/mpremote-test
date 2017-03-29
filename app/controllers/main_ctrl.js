@@ -91,6 +91,12 @@ function main_ctrl($scope, $rootScope, $timeout, $location, MPDService) {
         }
     });
 
+    $scope.$on('onPlaylistChanged', function (event, status) {
+        $scope.$apply();
+        console.log("status actual");
+        console.log(status);
+    })
+
     $scope.seek = function (player, e) {
         var fullProgressBarWidth = $(e.currentTarget).width();
         var requestedPosition = e.offsetX / fullProgressBarWidth;
@@ -101,14 +107,15 @@ function main_ctrl($scope, $rootScope, $timeout, $location, MPDService) {
     };
 
     $scope.addToQueue = function (tabIndex, player, song, willPlay) {
-        MPDService.add(player, song.file, function () {
+        MPDService.add(player, song.file, willPlay/* function () {
             $scope.$apply(function () {
                $scope.tabs[tabIndex].player = MPDService.getRooms()[tabIndex];
             });
             if(willPlay){
-                console.log('will play');
+                console.log("willplay "+willPlay);
+                MPDService.playAt(player, $scope.tabs[tabIndex].player.playlist.indexOf(song));
             }
-        });
+        }*/);
     };
 
     $scope.addSongs = function (player) {
@@ -173,10 +180,12 @@ function main_ctrl($scope, $rootScope, $timeout, $location, MPDService) {
             $scope.playlists = data;
         });
     });
-    $scope.loadPlaylist = function(player, playlist) {
+    $scope.loadPlaylist = function(tabIndex, player, playlist) {
         MPDService.clear(player);
         MPDService.loadPlaylist(player, playlist);
-        console.log($scope.tabs[0].library.allSongs);
+        $scope.$apply(function () {
+            $scope.tabs[tabIndex].player = MPDService.getRooms()[tabIndex];
+        });
     }
 
 }
