@@ -38,7 +38,6 @@ module.exports = function($rootScope, electron, $timeout) {
         if(player.status.state =='play'){
             player.currentSong = player.playlist[player.status.song];
             if((player.previousStatus.songId != -1 && player.previousStatus.songId != player.status.song) || player.previousStatus.state != 'pause') {
-                console.log('stopping counter');
                 stopCounter(player);
             }
             if(player.previousStatus.state == 'stop' || player.previousStatus.songId != player.status.song){
@@ -65,12 +64,21 @@ module.exports = function($rootScope, electron, $timeout) {
         connect : function (host, port, callback) {
             var mpd = new MPD({host: host, port : port});
             mpd.on('update', function (updated) {
+                console.log(updated);
                 if(updated == 'player'){
                     this.timer.time = (this.status.time) ? this.status.time.length : 0;
                     this.timer.counter = (this.status.time) ? this.status.time.elapsed : 0;
                     checkStatus(this);
+                }else if(updated == 'playlist'){
+                    if(this.hasOwnProperty('willPlay')){
+                        //song added
+                        if(this.willPlay){
+                            this.playAt(this.playlist.length-1);
+                        }
+                        delete this.willPlay;
+                    }
+                    $rootScope.$broadcast('onPlaylistChanged', {status: status});
                 }
-                $rootScope.$broadcast('onUpdate', {mpd: this, event: updated});
             });
             mpd.on('ready', function (status, server) {
                 //if everything is ok, we add this mpd to the rooms array
@@ -148,12 +156,14 @@ module.exports = function($rootScope, electron, $timeout) {
 
             });
         },
-        add: function (player, element, callback) {
-            player.add(element, callback);
+        add: function (player, element, willPlay) {
+            player.willPlay = willPlay;
+            player.add(element, function () {
+                console.log("add song");
+            });
         },
-        delete : function (player, element) {
-            player.delete(element, function() {
-                console.log(player.playlist);
+        delete : function (player, position) {
+            player.delete(position, function() {
             })
         },
         volPlus: function (player) {
@@ -229,13 +239,6 @@ module.exports = function($rootScope, electron, $timeout) {
         },
         seek: function (player, position, callback) {
             player.seek(position,callback);
-        }/*,
-        setPlayer : function (player) {
-            rooms.forEach(function(element) {
-                if(element.$$hashKey == player.$$hashKey){
-                    currentMPD = element;
-                }
-            });
-        }*/
+        }
     }
 };
