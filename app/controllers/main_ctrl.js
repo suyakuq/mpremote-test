@@ -6,6 +6,12 @@ function main_ctrl($scope, $rootScope, $timeout, $location, MPDService) {
     const categories = ['playlist','artist','genre','album', 'allSongs'];
 
     $scope.tabs = [];
+    $scope.isPlaylist = false;
+    
+    
+    $scope.getplaylists = function(player){
+        MPDService.getPlaylists(player);
+    }
 
     /**
      * Fonction qui s'éxecute quand le controller charge (après le chargement du DOM, voir $timeout)
@@ -32,6 +38,15 @@ function main_ctrl($scope, $rootScope, $timeout, $location, MPDService) {
     };
 
     $scope.searchSongs = function(tabIndex, player, type, criteria){
+        if(type == "playlist")
+        {
+            $scope.isPlaylist = true;
+            $scope.currentPlaylist = criteria;
+        }
+        else
+        {
+            $scope.isPlaylist = false;   
+        }
         MPDService.searchSongs(tabIndex, player, type, criteria);
     };
 
@@ -146,6 +161,23 @@ function main_ctrl($scope, $rootScope, $timeout, $location, MPDService) {
     $scope.volMinus = function (player) {
         MPDService.volMinus(player);
     };
+    $scope.addSongToPlaylist = function(player, playlist, song) {
+        MPDService.addSongToPlaylist(player, playlist, song.file);
+    };
+    $scope.deleteSongFromPlaylist = function(player, name, song){
+        MPDService.deleteSongFromPlaylist(player, name, song);
+        $scope.tabs[0].library.allSongs.splice(song,1)
+    };
+    $scope.$on('onPlaylistsReceived', function(event, data){
+        $scope.$apply(function(){
+            $scope.playlists = data;
+        });
+    });
+    $scope.loadPlaylist = function(player, playlist) {
+        MPDService.clear(player);
+        MPDService.loadPlaylist(player, playlist);
+        console.log($scope.tabs[0].library.allSongs);
+    }
 
 }
 

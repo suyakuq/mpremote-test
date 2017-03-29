@@ -229,7 +229,13 @@ module.exports = function($rootScope, electron, $timeout) {
         },
         seek: function (player, position, callback) {
             player.seek(position,callback);
-        }/*,
+        },
+        getPlaylists : function (player) {
+            player.listOfPlaylists(function(response){
+               $rootScope.$broadcast('onPlaylistsReceived', response);
+            })
+        }
+            /*,
         setPlayer : function (player) {
             rooms.forEach(function(element) {
                 if(element.$$hashKey == player.$$hashKey){
