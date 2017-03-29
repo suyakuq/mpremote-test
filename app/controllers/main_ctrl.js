@@ -29,6 +29,7 @@ function main_ctrl($scope, $rootScope, $timeout, $location, MPDService) {
 
     });
     $scope.openLibrary=function(tabIndex, player){
+        $scope.isPlaylist = false;
         var library = $scope.tabs[tabIndex].library;
         categories.forEach(function (e) {
             MPDService.queryLibraryByType(tabIndex, player, e);
