@@ -52,11 +52,18 @@ function main_ctrl($scope, $rootScope, $timeout, $location, MPDService) {
     };
 
     $scope.addPlaylist = function(tabIndex, player, name){
-        MPDService.addPlaylist(tabIndex, player, name, function (response) {
-            if(response){
-                $scope.tabs[tabIndex].library.playlists.push(response);
-            }
+        MPDService.addPlaylist(tabIndex, player, name, function(response){
+            console.log(response);
         });
+        $scope.tabs[tabIndex].library.playlists.push(name);
+        $scope.newPlaylist = "";
+    };
+
+    $scope.deletePlaylist = function(tabIndex, player, name){
+        MPDService.removePlaylist(player, name, function(response){
+            console.log(response);
+        });
+        $scope.tabs[tabIndex].library.playlists.splice($scope.tabs[tabIndex].library.playlists.indexOf(name),1);
     };
 
     $scope.$on('onDataReceived', function (event, data) {
@@ -185,8 +192,6 @@ function main_ctrl($scope, $rootScope, $timeout, $location, MPDService) {
         MPDService.clear(player);
         MPDService.loadPlaylist(player, playlist);
         $scope.tabs[tabIndex].player = MPDService.getRooms()[tabIndex];
-        /*$scope.$apply(function () {
-        });*/
     }
 
 }

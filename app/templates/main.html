@@ -77,8 +77,11 @@
 						<div>
 							<div ng-repeat="playlist in tab.library.playlists" class="item" ng-click="searchSongs($parent.$index, $parent.tab.player, 'playlist', playlist)" class="row">
 								<div class="col-sm-8"><a href="">{{playlist}}</a></div>
-								<div class="col-sm-4 text-right">
+								<div class="col-sm-2">
 									<button><i class="fa fa-plus" aria-hidden="true" ng-click="loadPlaylist($parent.$index, $parent.tab.player, playlist); $event.stopPropagation();"></i></button>
+								</div>
+								<div class="col-sm-2">
+									<button><i class="fa fa-trash" aria-hidden="true" ng-click="deletePlaylist($parent.$index, $parent.tab.player, playlist); $event.stopPropagation();"></i></button>
 								</div>
 							</div>
 						</div>
@@ -114,8 +117,8 @@
 								<li class="dropdown-submenu">
 									<a href ng-mouseover="getplaylists($parent.tab.player)">Add to Playlist</a>
 									<ul class="dropdown-menu">
-										<li ng-repeat="pl in playlists" class="item">{{pl}}
-											<i class="fa fa-plus" aria-hidden="true" ng-click="addSongToPlaylist($parent.tab.player, pl, song);"></i>
+										<li ng-repeat="pl in playlists" role="menuitem">
+											<a href ng-click="addSongToPlaylist($parent.tab.player, pl, song)">{{pl}}</a></li>
 										</li>
 									</ul>
 								</li>
