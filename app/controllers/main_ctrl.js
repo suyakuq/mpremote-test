@@ -7,6 +7,7 @@ function main_ctrl($scope, $rootScope, $timeout, $location, MPDService) {
 
     $scope.tabs = [];
     $scope.isPlaylist = false;
+    $scope.newPlaylist = {name : ""};
     
     
     $scope.getplaylists = function(player){
@@ -54,10 +55,12 @@ function main_ctrl($scope, $rootScope, $timeout, $location, MPDService) {
 
     $scope.addPlaylist = function(tabIndex, player, name){
         MPDService.addPlaylist(tabIndex, player, name, function(response){
-            console.log(response);
+            if(response != "OK"){
+                console.log("playlist deja existante!");
+            }
         });
         $scope.tabs[tabIndex].library.playlists.push(name);
-        $scope.newPlaylist = "";
+        $scope.newPlaylist.name = "";
     };
 
     $scope.deletePlaylist = function(tabIndex, player, name){
