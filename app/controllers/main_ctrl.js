@@ -23,7 +23,8 @@ function main_ctrl($scope, $rootScope, $timeout, $location, MPDService) {
             $scope.tabs.push({
                 title: player.host,
                 player: player,
-                library: { open: false, genres: [], artists : [], playlists: [], albums: [], allSongs: []}
+                library: { open: false, genres: [], artists : [], playlists: [], albums: [], allSongs: []},
+                subMenuCollapsed: false
             });
         }, this);
 
