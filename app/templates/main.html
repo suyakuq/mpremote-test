@@ -114,14 +114,21 @@
 							<ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="single-button">
 								<li role="menuitem"><a href ng-click="addToQueue($parent.$index, $parent.tab.player, song,  false)">Add to queue</a></li>
 								<li role="menuitem"><a href ng-click="addToQueue($parent.$index, $parent.tab.player, song, true)">Add and play</a></li>
-								<li class="dropdown-submenu">
+								<li role="menuitem">
+									<a>Add to Playlist
+										<button  uib-popover-template="'app/templates/popover.html'" popover-placement="left-top" popover-trigger="'click'" ng-click="$event.stopPropagation();"
+												type="button"><i class="fa fa-caret-down" aria-hidden="true"></i></button>
+									</a>
+								</li>
+
+								<!--<li class="dropdown-submenu">
 									<a href ng-mouseover="getplaylists($parent.tab.player)">Add to Playlist</a>
 									<ul class="dropdown-menu">
 										<li ng-repeat="pl in playlists" role="menuitem">
 											<a href ng-click="addSongToPlaylist($parent.tab.player, pl, song)">{{pl}}</a></li>
 										</li>
 									</ul>
-								</li>
+								</li>-->
 							</ul>
 						</div>
 
