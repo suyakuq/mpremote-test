@@ -78,7 +78,7 @@
 							<div ng-repeat="playlist in tab.library.playlists" class="item" ng-click="searchSongs($parent.$index, $parent.tab.player, 'playlist', playlist)" class="row">
 								<div class="col-sm-8"><a href="">{{playlist}}</a></div>
 								<div class="col-sm-4 text-right">
-									<button><i class="fa fa-plus" aria-hidden="true" ng-click="loadPlaylist(playlist); $event.stopPropagation();"></i></button>
+									<button><i class="fa fa-plus" aria-hidden="true" ng-click="loadPlaylist($parent.$index, $parent.tab.player, playlist); $event.stopPropagation();"></i></button>
 								</div>
 							</div>
 						</div>
@@ -105,12 +105,18 @@
 					<div>
 					<div ng-repeat="song in tab.library.allSongs | filter:query" class="row">
 						<div class="col-sm-10"><a href="">{{song.title || song.file}}</a></div>
-						<div class="col-sm-2 text-right" uib-dropdown>
+						<i ng-if="isPlaylist" class="fa fa-trash" aria-hidden="true" ng-click="deleteSongFromPlaylist($parent.tab.player, currentPlaylist, $index)"></i>
+						<div ng-if="!isPlaylist" class="col-sm-2 text-right" uib-dropdown>
 							<button id="single-button" uib-dropdown-toggle><i class="fa fa-caret-down" aria-hidden="true"></i></button>
 							<ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="single-button">
 								<li role="menuitem"><a href ng-click="addToQueue($parent.$index, $parent.tab.player, song,  false)">Add to queue</a></li>
 								<li role="menuitem"><a href ng-click="addToQueue($parent.$index, $parent.tab.player, song, true)">Add and play</a></li>
-								<li role="menuitem"><a href ng-click="addToPlaylist()">Add to playlist</a></li>
+								<li role="menuitem">
+									<a>Add to Playlist
+										<button  uib-popover-template="'app/templates/popover.html'" popover-placement="left-top" popover-trigger="'click'" ng-click="$event.stopPropagation();"
+												type="button"><i class="fa fa-caret-down" aria-hidden="true"></i></button>
+									</a>
+								</li>
 							</ul>
 						</div>
 

@@ -69,13 +69,16 @@ module.exports = function($rootScope, electron, $timeout) {
                     this.timer.time = (this.status.time) ? this.status.time.length : 0;
                     this.timer.counter = (this.status.time) ? this.status.time.elapsed : 0;
                     checkStatus(this);
-                }else if(updated == 'playlist'){
-                    if(this.hasOwnProperty('willPlay')){
-                        //song added
-                        if(this.willPlay){
-                            this.playAt(this.playlist.length-1);
+                }else {
+                    if(updated == 'playlist') {
+                        if (this.hasOwnProperty('willPlay')) {
+                            //song added
+                            if (this.willPlay) {
+                                this.playAt(this.playlist.length - 1);
+                            }
+                            delete this.willPlay;
                         }
-                        delete this.willPlay;
+
                     }
                     $rootScope.$broadcast('onPlaylistChanged', {status: status});
                 }
@@ -239,6 +242,19 @@ module.exports = function($rootScope, electron, $timeout) {
         },
         seek: function (player, position, callback) {
             player.seek(position,callback);
+        },
+        getPlaylists : function (player) {
+            player.listOfPlaylists(function(response){
+               $rootScope.$broadcast('onPlaylistsReceived', response);
+            })
         }
+            /*,
+        setPlayer : function (player) {
+            rooms.forEach(function(element) {
+                if(element.$$hashKey == player.$$hashKey){
+                    currentMPD = element;
+                }
+            });
+        }*/
     }
 };

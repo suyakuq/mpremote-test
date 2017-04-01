@@ -12,7 +12,7 @@ function settings_ctrl($scope, $rootScope, $location, MPDService) {
             console.log(error);
         }
 
-    })
+    });
     $scope.onServerSelect = function (server) {
         if(server == null){
             $scope.player.host = "";
@@ -27,6 +27,7 @@ function settings_ctrl($scope, $rootScope, $location, MPDService) {
     $scope.player = {mustRemember: false};
     $scope.tabs = [];
     $scope.rooms = MPDService.getRooms();
+    console.log($scope.rooms);
     $scope.rooms.forEach(function(player,i) {
         $scope.tabs.push({
             id: i,

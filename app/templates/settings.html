@@ -2,8 +2,16 @@
     <uib-tab index="$index" ng-repeat="tab in tabs" heading="{{tab.title}}" disable="tab.disabled">
         <div ng-if="!tab.static" class="row">
             <div class="col-md-6 col-md-offset-3" >
-                <p>Vous &ecaron;tes connect&eacute; &agrave; {{tab.player.host}}:{{tab.player.port}}</p>
-                <button class="btn btn-default" ng-click="disconnect(tab.player)">Se déconnecter</button>
+                <h2 class="text-center">Connect&eacute; &agrave; {{tab.player.host}}</h2>
+                <h3 class="text-center">Stats:</h3>
+                <ul class="center-block">
+                    <li>Port: {{tab.player.port}}</li>
+                    <li>Musiques dans la queue: {{tab.player.playlist.length}}</li>
+                    <li>State: {{tab.player.status.state}}</li>
+                    <li>Random: {{tab.player.status.random ? 'On' : 'Off'}}</li>
+                    <li>Repeat: {{tab.player.status.repeat ? 'On' : 'Off'}}</li>
+                </ul>
+                <button  class="text-center btn btn-default" ng-click="disconnect(tab.player)">Se déconnecter</button>
             </div>
         </div>
         <div ng-if="tab.static"  class="col-md-6 col-md-offset-3">
