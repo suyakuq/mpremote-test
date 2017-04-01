@@ -70,6 +70,9 @@
 							<div ng-repeat="album in tab.library.albums" ng-click="searchSongs($parent.$index, $parent.tab.player, 'album', album)" class="row">
 								<div  class="col-sm-12"><a href="">{{album}}</a></div>
 							</div>
+							<div class="row">
+								<div  ng-if="showAllAlbums" class="col-sm-12"><a href="" ng-click="getAll($parent.$index, $parent.tab.player)">All</a></div>
+							</div>
 						</div>
 					</div>
 					<div class="col-sm-6 classic-list">
@@ -93,10 +96,10 @@
 						</div>
 					</div>
 					<div class="col-sm-6 classic-list">
-						<h3>Composers</h3>
+						<h3>Artist</h3>
 						<div>
                             <div ng-repeat="artist in tab.library.artists" class="item" ng-click="searchSongs($parent.$index, $parent.tab.player, 'artist', artist)" class="row">
-                                <div class="col-sm-12"><a href="">{{artist}}</a></div>
+                                <div class="col-sm-12"><a href="" ng-click="getArtistAlbums($parent.$index, $parent.tab.player, artist)">{{artist}}</a></div>
                             </div>
 						</div>
 					</div>
@@ -106,6 +109,9 @@
 						<input class="col-sm-10 col-sm-offset-1" ng-model="query" type="text" placeholder="Search (genres, albums, songs ...)" />
 					</div>
 					<div>
+					<div class="row">
+						<div class="col-sm-12"><input class="text-center" type="submit" ng-click="all($index, tab.player)" value="Show all songs"/></div>
+					</div>
 					<div ng-repeat="song in tab.library.allSongs | filter:query" class="row">
 						<div class="col-sm-10"><a href="">{{song.title || song.file}}</a></div>
 						<i ng-if="isPlaylist" class="fa fa-trash" aria-hidden="true" ng-click="deleteSongFromPlaylist($parent.tab.player, currentPlaylist, $index)"></i>

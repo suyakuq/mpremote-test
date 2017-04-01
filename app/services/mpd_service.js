@@ -183,7 +183,7 @@ module.exports = function($rootScope, electron, $timeout) {
                 player.updateStatus();
             }
         },
-        queryLibraryByType: function (tabIndex, player, type) {
+        queryLibraryByType: function (tabIndex, player, type, filterType, filter) {
             if(type =='allSongs'){
                 player.getSongs(function (data) {
                     $rootScope.$broadcast('onDataReceived', {type: type, items: data, tabIndex: tabIndex});
@@ -194,7 +194,7 @@ module.exports = function($rootScope, electron, $timeout) {
                     $rootScope.$broadcast('onDataReceived', {type: type, items: data, tabIndex: tabIndex});
                 });
             }else{
-                player.getList(type, function (data) {
+                player.getList(type, filterType, filter, function (data) {
                     data = data.filter(filterEmpty);
                     $rootScope.$broadcast('onDataReceived', {type: type, items: data, tabIndex: tabIndex});
                 });

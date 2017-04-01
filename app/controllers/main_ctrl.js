@@ -3,12 +3,28 @@
  */
 function main_ctrl($scope, $rootScope, $timeout, $location, MPDService) {
     $rootScope.showHome = false;
-    const categories = ['playlist','artist','genre','album', 'allSongs'];
+    const categories = ['playlist','artist','genre','album'];
 
     $scope.tabs = [];
     $scope.isPlaylist = false;
     $scope.newPlaylist = {name : ""};
-    
+    $scope.showAllAlbums = false;
+
+    $scope.all = function (tabIndex, player) {
+        MPDService.queryLibraryByType(tabIndex, player, 'allSongs');
+    };
+
+    $scope.getArtistAlbums = function(tabIndex, player, artist) {
+        MPDService.queryLibraryByType(tabIndex, player, 'album', 'artist', artist);
+        $scope.showAllAlbums = true;
+    }
+
+    $scope.getAll = function(tabIndex, player){
+        categories.forEach(function (e) {
+            MPDService.queryLibraryByType(tabIndex, player, e, null, null);
+        });
+        $scope.showAllAlbums = false;
+    }
     
     $scope.getplaylists = function(player){
         MPDService.getPlaylists(player);
@@ -34,7 +50,7 @@ function main_ctrl($scope, $rootScope, $timeout, $location, MPDService) {
         $scope.isPlaylist = false;
         var library = $scope.tabs[tabIndex].library;
         categories.forEach(function (e) {
-            MPDService.queryLibraryByType(tabIndex, player, e);
+            MPDService.queryLibraryByType(tabIndex, player, e, null, null);
         });
         library.open = !library.open;
         console.log($scope.tabs[tabIndex].library.open);
