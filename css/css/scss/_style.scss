@@ -121,9 +121,11 @@ header{
     span{
         cursor: pointer;
     }
-    .fa-trash{
-        color: $colorSecondary1;
-    }
+}
+
+
+.fa-trash{
+    color: $colorSecondary1;
 }
 
 .notransition {
@@ -142,4 +144,14 @@ header{
 
 .progress-bar{
     background: $colorSecondary1;
+}
+
+.currentSong{
+    h3{
+        color: $colorPrincipal1;
+        text-transform: none;
+    }
+    p{
+        color: $colorSecondary1;
+    }
 }
