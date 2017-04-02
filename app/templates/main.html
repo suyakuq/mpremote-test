@@ -1,9 +1,9 @@
-			  <uib-tabset active="active">
+<uib-tabset active="active">
 	<uib-tab index="$index" ng-repeat="tab in tabs" heading="{{tab.title}}" disable="tab.disabled">
 		<section class="row player">
 				<div class="row info text-center">
 					<div class="row currentSong">
-						<h3>{{tab.player.currentSong.title}}</h3>
+						<h3>{{tab.player.currentSong.title || tab.player.currentSong.file}}</h3>
 						<p>{{tab.player.currentSong.artist}}</p>
 					</div>
 					<div ng-if="tab.player && tab.player.currentSong" class="row">

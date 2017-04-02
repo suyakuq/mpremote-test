@@ -11,6 +11,7 @@ function main_ctrl($scope, $rootScope, $timeout, $location, MPDService) {
     $scope.showAllAlbums = false;
 
     $scope.all = function (tabIndex, player) {
+        $scope.isPlaylist = false;
         MPDService.queryLibraryByType(tabIndex, player, 'allSongs');
     };
 

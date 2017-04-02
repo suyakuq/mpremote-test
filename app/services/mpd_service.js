@@ -35,8 +35,10 @@ module.exports = function($rootScope, electron, $timeout) {
     };
 
     const checkStatus = function (player) {
+        if(player.status.song != undefined)  player.currentSong = player.playlist[player.status.song];
+        console.log(player.currentSong);
         if(player.status.state =='play'){
-            player.currentSong = player.playlist[player.status.song];
+            //player.currentSong = player.playlist[player.status.song];
             if((player.previousStatus.songId != -1 && player.previousStatus.songId != player.status.song) || player.previousStatus.state != 'pause') {
                 stopCounter(player);
             }
@@ -54,7 +56,6 @@ module.exports = function($rootScope, electron, $timeout) {
 
     var MPD = require('node-mpd');
     var rooms = [];
-    var inc = 0;
     const volume_interval = 10;
     return{
         //return all mpds
@@ -78,7 +79,6 @@ module.exports = function($rootScope, electron, $timeout) {
                             }
                             delete this.willPlay;
                         }
-
                     }
                     $rootScope.$broadcast('onPlaylistChanged', {status: status});
                 }
