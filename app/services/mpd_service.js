@@ -238,13 +238,5 @@ module.exports = function($rootScope, electron, $timeout) {
                $rootScope.$broadcast('onPlaylistsReceived', response);
             })
         }
-            /*,
-        setPlayer : function (player) {
-            rooms.forEach(function(element) {
-                if(element.$$hashKey == player.$$hashKey){
-                    currentMPD = element;
-                }
-            });
-        }*/
     }
 };
