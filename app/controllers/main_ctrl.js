@@ -29,7 +29,7 @@ function main_ctrl($scope, $rootScope, $timeout, $location, MPDService) {
     
     $scope.getplaylists = function(player){
         MPDService.getPlaylists(player);
-    }
+    };
 
     /**
      * Fonction qui s'éxecute quand le controller charge (après le chargement du DOM, voir $timeout)
@@ -136,19 +136,7 @@ function main_ctrl($scope, $rootScope, $timeout, $location, MPDService) {
     };
 
     $scope.addToQueue = function (tabIndex, player, song, willPlay) {
-        MPDService.add(player, song.file, willPlay/* function () {
-            $scope.$apply(function () {
-               $scope.tabs[tabIndex].player = MPDService.getRooms()[tabIndex];
-            });
-            if(willPlay){
-                console.log("willplay "+willPlay);
-                MPDService.playAt(player, $scope.tabs[tabIndex].player.playlist.indexOf(song));
-            }
-        }*/);
-    };
-
-    $scope.addSongs = function (player) {
-        MPDService.addSongs();
+        MPDService.add(player, song.file, willPlay);
     };
 
     $scope.play = function (player) {

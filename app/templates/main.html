@@ -20,7 +20,10 @@
 						<button id="stop" ng-click="stop(tab.player)"><i class="fa fa-stop" aria-hidden="true"></i></button>
 						<button id="next" ng-click="next(tab.player)"><i class="fa fa-step-forward" aria-hidden="true"></i></button>
 					</div>
-					<div class="col-sm-3 col-sm-offset-4">
+					<div class="col-sm-4 rangeContent" ng-click="seek(tab.player,$event)">
+						<input id="timer" type="range" name="songTime" min="0" max="{{tab.player.timer.time}}" ng-model="tab.player.timer.counter" on-release="seek(tab.player.timer.counter)">
+					</div>
+					<div class="col-sm-3">
 						<span id="currentVol"></span>
 						<button id="volMinus" ng-click="volMinus(tab.player)"><i class="fa fa-volume-down" aria-hidden="true"></i></button>
 						<button  id="volPlus" ng-click="volPlus(tab.player)"><i class="fa fa-volume-up" aria-hidden="true"></i></button>
@@ -28,14 +31,9 @@
 						<button ng-class="{'btn-selected': tab.player.status.random}" id="random" ng-click="random(tab.player)"><i class="fa fa-random" aria-hidden="true"></i></button>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-sm-offset-4 col-sm-4 progress player-bar" ng-click="seek(tab.player,$event)">
-						<div class="progress-bar notransition" role="progressbar"
-							 aria-valuenow="{{tab.player.timer.divide()}}" aria-valuemin="0" aria-valuemax="{{tab.player.timer.time}}" style="min-width: 0em" ng-style="{width:tab.player.timer.divide()+'%'}">
-							{{tab.player.timer.counter}}
-						</div>
-					</div>
-				</div>
+				<!--<div class="row">
+
+				</div>-->
 		</section>
 
 		<section ng-show="tab.library.open" class="row content">

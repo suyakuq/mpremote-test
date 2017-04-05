@@ -16,15 +16,11 @@ module.exports = function($rootScope, electron, $timeout) {
     };
 
     const stopCounter = function(player){
-        //divide = pourcentage par rapport à la durée de la musique, pour le width du progress-bar
-        player.divide = 0;
+        player.counter = 0;
         $timeout.cancel(player.promiseTimeout);
-        //$timeout.cancel(mytimeout);
     };
 
     const onTimeout = function(player){
-        //divide = pourcentage par rapport à la durée de la musique, pour le width du progress-bar
-        //counter = valeur, soit 0 soit le temps qui a passé en jouant la musique (on l'obtient et on le set de $scope.player.status.time.elapsed)
 
         if(player.timer.counter < player.timer.time){
             player.promiseTimeout  = $timeout(function () {
@@ -36,9 +32,7 @@ module.exports = function($rootScope, electron, $timeout) {
 
     const checkStatus = function (player) {
         if(player.status.song != undefined)  player.currentSong = player.playlist[player.status.song];
-        console.log(player.currentSong);
         if(player.status.state =='play'){
-            //player.currentSong = player.playlist[player.status.song];
             if((player.previousStatus.songId != -1 && player.previousStatus.songId != player.status.song) || player.previousStatus.state != 'pause') {
                 stopCounter(player);
             }
@@ -65,7 +59,6 @@ module.exports = function($rootScope, electron, $timeout) {
         connect : function (host, port, callback) {
             var mpd = new MPD({host: host, port : port});
             mpd.on('update', function (updated) {
-                console.log(updated);
                 if(updated == 'player'){
                     this.timer.time = (this.status.time) ? this.status.time.length : 0;
                     this.timer.counter = (this.status.time) ? this.status.time.elapsed : 0;
@@ -87,10 +80,7 @@ module.exports = function($rootScope, electron, $timeout) {
                 //if everything is ok, we add this mpd to the rooms array
                 this.timer = {
                     time: (this.status.time) ? this.status.time.length : 0,
-                    counter: (this.status.time) ? this.status.time.elapsed : 0,
-                    divide : function () {
-                        return this.counter*100/this.time;
-                    }
+                    counter: (this.status.time) ? this.status.time.elapsed : 0
                 };
                 this.previousStatus = {state : this.status.state, songId: this.status.song || -1};
                 rooms.push(this);
