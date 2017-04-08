@@ -1,0 +1,155 @@
+<uib-tabset active="active">
+	<uib-tab index="$index" ng-repeat="tab in tabs" heading="{{tab.title}}" disable="tab.disabled">
+		<section class="row player">
+				<div class="row info text-center">
+					<div class="row currentSong">
+						<h3>{{tab.player.currentSong.title || tab.player.currentSong.file}}</h3>
+						<p>{{tab.player.currentSong.artist}}</p>
+					</div>
+					<div ng-if="tab.player && tab.player.currentSong" class="row">
+						<div class="row text-center">
+								<img src="images/disc_default.png" class="img-disc" alt="Image"/>
+						</div>
+					</div>
+				</div>
+				<div class="row remote text-center">
+					<div class="col-sm-3 col-sm-offset-1">
+						<button id="prev" ng-click="prev(tab.player)"><i class="fa fa-step-backward" aria-hidden="true"></i></button>
+						<button ng-if="tab.player.status.state == 'play'" id="pause" ng-click="pause(tab.player)"><i class="fa fa-pause" aria-hidden="true"></i></button>
+						<button ng-if="tab.player.status.state != 'play'" id="play" ng-click="play(tab.player)"><i class="fa fa-play" aria-hidden="true"></i></button>
+						<button id="stop" ng-click="stop(tab.player)"><i class="fa fa-stop" aria-hidden="true"></i></button>
+						<button id="next" ng-click="next(tab.player)"><i class="fa fa-step-forward" aria-hidden="true"></i></button>
+					</div>
+					<div class="col-sm-4 rangeContent" ng-click="seek(tab.player,$event)">
+						<input id="timer" type="range" name="songTime" min="0" max="{{tab.player.timer.time}}" ng-model="tab.player.timer.counter" on-release="seek(tab.player.timer.counter)">
+					</div>
+					<div class="col-sm-3">
+						<span id="currentVol"></span>
+						<button id="volMinus" ng-click="volMinus(tab.player)"><i class="fa fa-volume-down" aria-hidden="true"></i></button>
+						<button  id="volPlus" ng-click="volPlus(tab.player)"><i class="fa fa-volume-up" aria-hidden="true"></i></button>
+						<button ng-class="{'btn-selected': tab.player.status.repeat}" id="repeat"  ng-click="repeat(tab.player)"><i class="fa fa-repeat" aria-hidden="true"></i></button>
+						<button ng-class="{'btn-selected': tab.player.status.random}" id="random" ng-click="random(tab.player)"><i class="fa fa-random" aria-hidden="true"></i></button>
+					</div>
+				</div>
+				<!--<div class="row">
+
+				</div>-->
+		</section>
+
+		<section ng-show="tab.library.open" class="row content">
+			<div class="row text-uppercase text-center">
+				<h1>Your music</h1>
+			</div>
+			<div>
+				<div class="col-sm-3 waiting-list">
+					<h3>Queue</h3>
+					<div>
+						<div class="row" ng-repeat="song in tab.player.playlist" class="item" ng-class="{selected: $index == tab.player.status.song && tab.player.status.state !='stop'}" ng-click="playAt(tab.player,$index)">
+							<div class="col-sm-8"><a href="">{{song.file}}</a></div>
+							<div class="col-sm-4 text-right">
+                                <i ng-if="$index==tab.player.status.song && tab.player.status.state !='stop'" class="fa fa-play-circle-o" aria-hidden="true"></i>
+                                <button ng-if="$index!=tab.player.status.song || tab.player.status.state =='stop'" ng-click="delete(tab.player, $index);$event.stopPropagation();"><i class="fa fa-trash" aria-hidden="true"></i></button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="col-sm-6 classic-list">
+						<h3>Genres</h3>
+						<div>
+							<div ng-repeat="genre in tab.library.genres" class="item" ng-click="searchSongs($parent.$index, $parent.tab.player, 'genre', genre)" class="row">
+								<div class="col-sm-12"><a href="">{{genre}}</a></div>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6 classic-list">
+						<h3>Albums</h3>
+						<div>
+							<div ng-repeat="album in tab.library.albums" ng-click="searchSongs($parent.$index, $parent.tab.player, 'album', album)" class="row">
+								<div  class="col-sm-12"><a href="">{{album}}</a></div>
+							</div>
+							<div class="row">
+								<div  ng-if="showAllAlbums" class="col-sm-12"><a href="" ng-click="getAll($parent.$index, $parent.tab.player)">All</a></div>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6 classic-list">
+						<h3>Playlists</h3>
+						<div>
+							<div ng-repeat="playlist in tab.library.playlists" class="item" ng-click="searchSongs($parent.$index, $parent.tab.player, 'playlist', playlist)" class="row">
+								<div class="col-sm-8"><a href="">{{playlist}}</a></div>
+								<div class="col-sm-2">
+									<button><i class="fa fa-plus" aria-hidden="true" ng-click="loadPlaylist($parent.$index, $parent.tab.player, playlist); $event.stopPropagation();"></i></button>
+								</div>
+								<div class="col-sm-2">
+									<button><i class="fa fa-trash" aria-hidden="true" ng-click="deletePlaylist($parent.$index, $parent.tab.player, playlist); $event.stopPropagation();"></i></button>
+								</div>
+							</div>
+						</div>
+						<div class="text-center">
+                            <form ng-submit="addPlaylist($index, tab.player, newPlaylist.name)" class="new-playlist">
+                                <input placeholder="Entrer a name" type="text" ng-model="newPlaylist.name" name="text" class="col-sm-10 col-sm-offset-1 new-name"/>
+                                <input type="submit" id="submit" value="Add" class="btn-add"/>
+                            </form>
+						</div>
+					</div>
+					<div class="col-sm-6 classic-list">
+						<h3>Artist</h3>
+						<div>
+                            <div ng-repeat="artist in tab.library.artists" class="item" ng-click="searchSongs($parent.$index, $parent.tab.player, 'artist', artist)" class="row">
+                                <div class="col-sm-12"><a href="" ng-click="getArtistAlbums($parent.$index, $parent.tab.player, artist)">{{artist}}</a></div>
+                            </div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-3 search-list classic-list">
+					<div class="row text-center">
+						<input class="col-sm-10 col-sm-offset-1" ng-model="query" type="text" placeholder="Search (genres, albums, songs ...)" />
+					</div>
+					<div>
+					<div class="row">
+						<div class="col-sm-12"><input class="text-center" type="submit" ng-click="all($index, tab.player)" value="Show all songs"/></div>
+					</div>
+					<div ng-repeat="song in tab.library.allSongs | filter:query" class="row">
+						<div class="col-sm-10"><a href="">{{song.title || song.file}}</a></div>
+						<i ng-if="isPlaylist" class="fa fa-trash" aria-hidden="true" ng-click="deleteSongFromPlaylist($parent.tab.player, currentPlaylist, $index)"></i>
+						<div ng-if="!isPlaylist" class="col-sm-2 text-right" uib-dropdown>
+							<button id="single-button" uib-dropdown-toggle><i class="fa fa-caret-down" aria-hidden="true"></i></button>
+							<ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+								<li role="menuitem"><a href ng-click="addToQueue($parent.$index, $parent.tab.player, song,  false)">Add to queue</a></li>
+								<li role="menuitem"><a href ng-click="addToQueue($parent.$index, $parent.tab.player, song, true)">Add and play</a></li>
+								<li role="menuitem">
+									<a>Add to Playlist
+										<button  uib-popover-template="'app/templates/popover.html'" popover-placement="left-top" popover-trigger="'click'" ng-click="$event.stopPropagation();"
+												type="button"><i class="fa fa-caret-down" aria-hidden="true"></i></button>
+									</a>
+								</li>
+
+								<!--<li class="dropdown-submenu">
+									<a href ng-mouseover="getplaylists($parent.tab.player)">Add to Playlist</a>
+									<ul class="dropdown-menu">
+										<li ng-repeat="pl in playlists" role="menuitem">
+											<a href ng-click="addSongToPlaylist($parent.tab.player, pl, song)">{{pl}}</a></li>
+										</li>
+									</ul>
+								</li>-->
+							</ul>
+						</div>
+
+					</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<section>
+			<div class="row text-uppercase text-center">
+				<button class="btn-manage-library" ng-click="openLibrary($index, tab.player)">{{tab.library.open ? 'Close': 'Open' }} Library</button>
+			</div>
+		</section>
+	</uib-tab>
+</uib-tabset>
+<!--
+<div ng-if="rooms.length == 0">
+	Client not connected
+</div>
+-->

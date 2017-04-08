@@ -1,0 +1,82 @@
+<div class="row">
+    <h1 class="text-center">{{ player ? player.host : 'MPRemote' }}</h1>
+    <div class="col-md-3" >
+     <div class="padding list" id="bloc">
+            <h2>Albums :</h2>
+            <div ng-repeat="album in albums" class="item" ng-click="refrechList(album)">
+                {{album}}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3" >
+        <div class="padding list" id="bloc">
+            <h2>Artists :</h2>
+            <div ng-repeat="artist in artists" class="item" ng-click="refrechList(artist)">
+                {{artist}}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3" >
+        <div class="padding list" id="bloc">
+            <h2>Genres :</h2>
+            <div ng-repeat="genre in genres" class="item" ng-click="refrechList(genre)">
+                {{genre}}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3" >
+        <div class="padding list" id="bloc">
+            <h2>Playlists :</h2>
+            <div ng-repeat="pl in playlists" class="item" ng-click="getPlaylistSongs(pl)">
+                {{pl}}<i class="fa fa-trash" aria-hidden="true" ng-click="removePlaylist(pl); $event.stopPropagation();"></i>
+                <i class="fa fa-plus" aria-hidden="true" ng-click="loadPlaylist(pl); $event.stopPropagation();"></i>
+            </div>
+            <form ng-submit="addPlaylist(playlist.name)">
+                <input type="text" ng-model="playlist.name" name="text" class="form-control"/>
+                <input type="submit" id="submit" value="Ajouter" class="btn btn-primary"/>
+            </form>
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<div class="row">
+    <div class="col-md-12">
+        <h2 class="text-center">Songs :</h2>
+        <div class="padding list">
+            <div ng-repeat="song in songs track by $index" class="item">
+                <p ng-if="song.file">
+                    {{song.artist}} - {{song.title}}
+                    <i ng-click="selectSong(song);" data-toggle="modal" data-target="#playlists" class="fa fa-plus" aria-hidden="true"></i>
+                    <i ng-if="isPlaylist" class="fa fa-trash" aria-hidden="true" ng-click="deleteSongFromPlaylist(currentPlaylist,$index)"></i>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal listes des playlists-->
+<div class="modal fade" id="playlists" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Ajouter à</h4>
+      </div>
+      <div class="modal-body">
+            <div ng-repeat="pl in playlists" class="item">
+                {{pl}}
+                <i class="fa fa-plus" aria-hidden="true" ng-click="addSongToPlaylist(pl, selectedSong.file);"></i>
+            </div>
+            <div class="item">
+                Queue
+                <i class="fa fa-plus" aria-hidden="true" ng-click="addToQueue(selectedSong.file);"></i>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

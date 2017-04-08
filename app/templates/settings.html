@@ -1,0 +1,49 @@
+<uib-tabset active="active">
+    <uib-tab index="$index" ng-repeat="tab in tabs" heading="{{tab.title}}" disable="tab.disabled">
+        <div ng-if="!tab.static" class="row">
+            <div class="col-md-6 col-md-offset-3" >
+                <h2 class="text-center">Connect&eacute; &agrave; {{tab.player.host}}</h2>
+                <h3 class="text-center">Stats:</h3>
+                <ul class="center-block">
+                    <li>Port: {{tab.player.port}}</li>
+                    <li>Musiques dans la queue: {{tab.player.playlist.length}}</li>
+                    <li>State: {{tab.player.status.state}}</li>
+                    <li>Random: {{tab.player.status.random ? 'On' : 'Off'}}</li>
+                    <li>Repeat: {{tab.player.status.repeat ? 'On' : 'Off'}}</li>
+                </ul>
+                <button  class="text-center btn btn-default" ng-click="disconnect(tab.player)">Se déconnecter</button>
+            </div>
+        </div>
+        <div ng-if="tab.static"  class="col-md-6 col-md-offset-3">
+            <h3>Saisir les données du serveur</h3>
+            <div ng-if="savedServers.length >0" class="row">
+                <div class="col-md-4 text-center">
+                    <select ng-options="server.host for server in savedServers"
+                            ng-model="selectedServer" ng-change="onServerSelect(selectedServer)" >
+                        <option value="">Select Option</option>
+                    </select>
+                </div>
+            </div>
+
+            <form>
+
+                <div class="form-group">
+                    <label>
+                        <input type="text" class="form-control" placeholder="Host" ng-model="player.host" required>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="text" class="form-control" placeholder="Port" ng-model="player.port" required>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>Sauvegarder:
+                        <input type="checkbox" ng-model="player.mustRemember">
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-default" ng-click="connect(player)">Se connecter</button>
+            </form>
+        </div>
+    </uib-tab>
+</uib-tabset>
