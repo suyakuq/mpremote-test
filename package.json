@@ -5,12 +5,16 @@
   "main": "index.js",
   "scripts": {
     "browserifyApp": "browserify js/app.js -x node-mpd -x libnmap -x os -o js/bundle.js --debug",
-    "start": "npm run browserifyApp && electron index.js"
+    "start": "npm run browserifyApp && electron index.js",
+    "package": "asar pack MpRemote/resources/app MpRemote/resources/app.asar",
+    "build": "electron-packager . MpRemote"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "asar": "^0.13.0",
     "electron": "^1.6.1",
+    "electron-packager": "^8.6.0",
     "watch": "^1.0.2"
   },
   "dependencies": {
